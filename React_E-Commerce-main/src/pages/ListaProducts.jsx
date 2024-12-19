@@ -13,7 +13,7 @@ import ReactPaginate from "react-paginate";
 export const ListaProducts = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const [setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -48,7 +48,6 @@ export const ListaProducts = () => {
             } catch (error) {
                 console.error("Error encontrando información del producto", error);
                 toast.error("Error al cargar los productos.");
-                console.log(categories);
             } finally {
                 setLoading(false);
             }
