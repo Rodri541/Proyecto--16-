@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/aedcc23b-894b-44b9-bd5a-3839476048a9/resourceGroups/ProyectoSemestral_group/providers/Microsoft.Web/sites/ApiPrueba",
+    "appService.deploySubpath": "."
+}
