@@ -38,7 +38,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUSHROOM_0ED13131E }}  # Verifica que el token esté configurado
           action: "upload"
-          app_location: "./React_E-Commerce-main"  # Ruta correcta de los archivos estáticos
+          app_location: ".Proyecto/React_E-Commerce-main"  # Ruta correcta de los archivos estáticos
           api_location: ""  # No se requiere API si solo tienes una aplicación estática
           output_location: "build"  # Si la compilación ya está en una carpeta 'build', puedes dejarla así, de lo contrario, ajusta según sea necesario
           github_id_token: ${{ steps.idtoken.outputs.result }}
