@@ -1,0 +1,38 @@
+.body{
+  background: #FF7F32;
+}
+
+/* Contenedor de la paginación alineado a la derecha */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  /* Alineación a la derecha */
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+
+/* Botones de la paginación */
+.pagination button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Botón deshabilitado */
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Iconos de las flechas */
+.pagination i {
+  font-size: 30px;
+  color: #333;
+}
+
+.pagination span {
+  font-size: 18px;
+}
