@@ -1,7 +1,6 @@
 import "../css/dashboard.css";
 import "../css/listaProductos.css";
 import "../css/navbar.css";
-import EditarProduct from "./EditarProduct.jsx";
 import React, { useEffect, useState } from "react";
 import { Sidebar, Navbar } from "../components";
 import API_URL from "../config";
@@ -49,6 +48,7 @@ export const ListaProducts = () => {
             } catch (error) {
                 console.error("Error encontrando información del producto", error);
                 toast.error("Error al cargar los productos.");
+                console.log(categories);
             } finally {
                 setLoading(false);
             }
