@@ -13,7 +13,7 @@ import ReactPaginate from "react-paginate";
 export const ListaProducts = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [setCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -21,6 +21,12 @@ export const ListaProducts = () => {
     const offset = currentPage * itemsPerPage;
     const currentItems = products.slice(offset, offset + itemsPerPage);
     const pageCount = Math.ceil(products.length / itemsPerPage);
+
+    let a = 1;
+
+    if (categories === 1) {
+        return a;
+    }
 
     useEffect(() => {
         const getProduct = async () => {
