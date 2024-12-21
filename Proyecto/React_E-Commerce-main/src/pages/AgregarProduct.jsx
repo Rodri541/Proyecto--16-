@@ -17,7 +17,9 @@ export const AgregarProduct = () => {
     const Weight = useRef(null);
     const Volume = useRef(null);
     const Package = useRef(null);
+    const SupplierId = useRef(null);
     const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -32,8 +34,22 @@ export const AgregarProduct = () => {
             }
         };
 
+        const fetchSuppliers = async () => {
+            try {
+                const response = await fetch(`${API_URL}/proveedores`);
+                if (!response.ok) throw new Error("Error al cargar proveedores");
+                const data = await response.json();
+                setSuppliers(data);
+            } catch (error) {
+                console.error("Error al cargar los proveedores:", error);
+                toast.error("No se pudieron cargar los proveedores");
+            }
+        };
+
+        fetchSuppliers();
         fetchCategories();
     }, []);
+
 
     const crearProduct = (e) => {
         e.preventDefault();
@@ -51,6 +67,7 @@ export const AgregarProduct = () => {
             Weight: Weight.current?.value,
             Volume: Volume.current?.value,
             Package: Package.current?.value,
+            SupplierId: SupplierId.current?.value,
         };
 
         fetch(`${API_URL}/productos`, {
@@ -129,6 +146,20 @@ export const AgregarProduct = () => {
                                             {categories.map((category) => (
                                                 <option key={category.CategoryId} value={category.CategoryId}>
                                                     {category.Name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-md-6">
+                                    <div className="mb-3">
+                                        <label htmlFor="proveedor" className="form-label">Proveedor</label>
+                                        <select className="form-control" id="proveedor" ref={SupplierId} required>
+                                            <option value="">Seleccione un proveedor</option>
+                                            {suppliers.map((supplier) => (
+                                                <option key={supplier.SupplierId} value={supplier.SupplierId}>
+                                                    {supplier.Name}
                                                 </option>
                                             ))}
                                         </select>

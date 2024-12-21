@@ -7,27 +7,9 @@ export const AgregarProveedor = () => {
 
     const Name = useRef(null);
     const Phone = useRef(null);
-    const ProductId = useRef(null);
     const Cost = useRef(null);
     const Email = useRef(null);
     const LastPurchaseDate = useRef(null);
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch(`${API_URL}/productos`);
-                if (!response.ok) throw new Error("Error al cargar productos");
-                const data = await response.json();
-                setProducts(data);
-            } catch (error) {
-                console.error("Error al cargar los productos:", error);
-                toast.error("No se pudieron cargar los productos");
-            }
-        };
-
-        fetchProducts();
-    }, []);
 
     const crearProveedor = (e) => {
         e.preventDefault();
@@ -35,7 +17,6 @@ export const AgregarProveedor = () => {
         const proveedorData = {
             Name: Name.current?.value,
             Phone: Phone.current?.value,
-            ProductId: ProductId.current?.value,
             Cost: Cost.current?.value,
             Email: Email.current?.value,
             LastPurchaseDate: LastPurchaseDate.current?.value,
@@ -103,20 +84,6 @@ export const AgregarProveedor = () => {
                                     <div className="mb-3">
                                         <label htmlFor="telefono" className="form-label">Telefono</label>
                                         <input type="number" className="form-control" id="telefono" ref={Phone} required />
-                                    </div>
-                                </div>
-
-                                <div className="col-12 col-md-6">
-                                    <div className="mb-3">
-                                        <label htmlFor="producto" className="form-label">Producto</label>
-                                        <select className="form-control" id="producto" ref={ProductId} required multiple>
-                                            <option value="">Seleccione un Producto</option>
-                                            {products.map((p) => (
-                                                <option key={p.ProductId} value={p.ProductId}>
-                                                    {p.Name}
-                                                </option>
-                                            ))}
-                                        </select>
                                     </div>
                                 </div>
 

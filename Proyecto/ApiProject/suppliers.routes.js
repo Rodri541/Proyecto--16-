@@ -5,7 +5,6 @@ const {
   postSupplier,
   putSupplier,
   deleteSupplier,
-  getProductSupplier,
 } = require('./suppliers.controllers.js');
 
 const router = Router();
@@ -21,7 +20,5 @@ router.put("/proveedores/:id", putSupplier);
 
 router.delete("/proveedores/:id", deleteSupplier);
 //#endregion
-
-router.get("/proveedores/:id/productos", getProductSupplier);
 
 module.exports = router;

@@ -1,5 +1,5 @@
-const API_URL = "https://apiprueba-ekhkb4ebchfqhubg.canadacentral-01.azurewebsites.net/"; // Cambia el puerto si tu API usa otro
+const API_URL = "http://localhost:3000"; // Cambia el puerto si tu API usa otro
 
-console.log("Probando");
+//https://apiprueba-ekhkb4ebchfqhubg.canadacentral-01.azurewebsites.net/
 
 export default API_URL;

@@ -86,18 +86,19 @@ const postProduct = async (req, res) => {
       .input("categoryId", sql.Int, req.body.CategoryId)
       .input("imageUrl", sql.VarChar(255), req.body.ImageUrl)
       .input("creationDate", sql.DateTime, new Date())
-      .input("rate", sql.Decimal(18, 2), req.body.Rate)
-      .input("base", sql.Decimal(18, 2), req.body.Base)
-      .input("height", sql.Decimal(18, 2), req.body.Height)
-      .input("weight", sql.Decimal(18, 2), req.body.Weight)
-      .input("volume", sql.Decimal(18, 2), req.body.Volume)
-      .input("package", sql.Decimal(18, 2), req.body.Package)
+      .input("rate", sql.Decimal(3, 2), req.body.Rate)
+      .input("base", sql.Decimal(10, 2), req.body.Base)
+      .input("height", sql.Decimal(10, 2), req.body.Height)
+      .input("weight", sql.Decimal(10, 2), req.body.Weight)
+      .input("volume", sql.Decimal(10, 2), req.body.Volume)
+      .input("package", sql.Int, req.body.Package)
       .input("aLaVenta", sql.Bit, req.body.ALaVenta)
+      .input("supplierId", sql.Int, req.body.SupplierId)
       .query(`
         INSERT INTO Products 
-        (Name, Price, Cost, Description, Quantity, CategoryId, ImageUrl, CreationDate, Rate, Base, Height, Weight, Volume, Package, ALaVenta) 
+        (Name, Price, Cost, Description, Quantity, CategoryId, ImageUrl, CreationDate, Rate, Base, Height, Weight, Volume, Package, ALaVenta, SupplierId) 
         VALUES 
-        (@name, @price, @cost, @description, @quantity, @categoryId, @imageUrl, @creationDate, @rate, @base, @height, @weight, @volume, @package, @aLaVenta); 
+        (@name, @price, @cost, @description, @quantity, @categoryId, @imageUrl, @creationDate, @rate, @base, @height, @weight, @volume, @package, @aLaVenta, @supplierId); 
         SELECT SCOPE_IDENTITY() AS Id
       `);
 
@@ -117,6 +118,7 @@ const postProduct = async (req, res) => {
       Volume: req.body.Volume || null,
       Package: req.body.Package || null,
       ALaVenta: req.body.ALaVenta,
+      SupplierId: req.body.SupplierId,
     });
   } catch (e) {
     return res.json({ message: e.message });
@@ -134,8 +136,9 @@ const putProduct = async (req, res) => {
       .input("description", sql.NVarChar(255), req.body.Description)
       .input("quantity", sql.Int, req.body.Quantity)
       .input("alaventa", sql.Bit, req.body.ALaVenta)
+      .input("supplierId", sql.Int, req.body.SupplierId)
       .query(
-        "UPDATE Products SET Name = @name, Price = @price, Description = @description, Quantity = @quantity, ALaVenta = @alaventa WHERE ProductId = @id"
+        "UPDATE Products SET Name = @name, Price = @price, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId WHERE ProductId = @id"
       );
 
     if (result.rowsAffected[0] == 0) {
@@ -149,6 +152,7 @@ const putProduct = async (req, res) => {
       Description: req.body.Description,
       Quantity: req.body.Quantity,
       ALaVenta: req.body.ALaVenta,
+      SupplierId: req.body.SupplierId,
     });
   } catch (e) {
     return res.json({ message: e.message });

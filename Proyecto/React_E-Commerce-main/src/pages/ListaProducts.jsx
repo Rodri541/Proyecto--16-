@@ -17,7 +17,7 @@ export const ListaProducts = () => {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
 
-    const itemsPerPage = 5; // Número de elementos por página
+    const itemsPerPage = 10; // Número de elementos por página
     const offset = currentPage * itemsPerPage;
     const currentItems = products.slice(offset, offset + itemsPerPage);
     const pageCount = Math.ceil(products.length / itemsPerPage);
@@ -33,18 +33,25 @@ export const ListaProducts = () => {
                 const responseCategories = await axios.get(`${API_URL}/categorias`);
                 const categoriesData = responseCategories.data;
 
-                const productsWithCategories = productsData.map((product) => {
+                const responseSuppliers = await axios.get(`${API_URL}/proveedores`);
+                const suppliersData = responseSuppliers.data;
+
+                const productsWithDetails = productsData.map((product) => {
                     const category = categoriesData.find(
                         (cat) => cat.CategoryId === product.CategoryId
                     );
+                    const supplier = suppliersData.find(
+                        (sup) => sup.SupplierId === product.SupplierId
+                    );
+
                     return {
                         ...product,
                         categoryName: category ? category.Name : "Sin categoría",
+                        supplierName: supplier ? supplier.Name : "Sin proveedor",
                     };
                 });
 
-                setProducts(productsWithCategories);
-                //setCategories(categoriesData);
+                setProducts(productsWithDetails);
             } catch (error) {
                 console.error("Error encontrando información del producto", error);
                 toast.error("Error al cargar los productos.");
@@ -75,6 +82,7 @@ export const ListaProducts = () => {
                             <th>Nombre</th>
                             <th>Altura (cm)</th>
                             <th>Categoría</th>
+                            <th>Proveedor</th>
                             <th>Precio</th>
                             <th>Stock</th>
                             <th>¿A la venta?</th>
@@ -88,6 +96,7 @@ export const ListaProducts = () => {
                                 <td>{item.Name}</td>
                                 <td>{item.Height != null ? item.Height : "-"}</td>
                                 <td>{item.categoryName}</td>
+                                <td>{item.supplierName}</td>
                                 <td>{`$${item.Price}`}</td>
                                 <td>{item.Quantity}</td>
                                 <td>

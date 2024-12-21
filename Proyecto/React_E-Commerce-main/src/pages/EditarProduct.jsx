@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditarProduct = () => {
-    const { productId } = useParams(); 
+    const { productId } = useParams();
     const navigate = useNavigate();
-    
+
     const Name = useRef(null);
     const Price = useRef(null);
     const Cost = useRef(null);
@@ -21,7 +21,9 @@ const EditarProduct = () => {
     const Volume = useRef(null);
     const Package = useRef(null);
     const ALaVenta = useRef(null);
+    const SupplierId = useRef(null);
     const [categories, setCategories] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
@@ -35,6 +37,18 @@ const EditarProduct = () => {
             } catch (error) {
                 console.error("Error al cargar las categorías:", error);
                 toast.error("No se pudieron cargar las categorías");
+            }
+        };
+
+        const fetchSuppliers = async () => {
+            try {
+                const response = await fetch(`${API_URL}/proveedores`);
+                if (!response.ok) throw new Error("Error al cargar proveedores");
+                const data = await response.json();
+                setSuppliers(data);
+            } catch (error) {
+                console.error("Error al cargar los proveedores:", error);
+                toast.error("No se pudieron cargar los proveedores");
             }
         };
 
@@ -52,6 +66,7 @@ const EditarProduct = () => {
 
         fetchCategories();
         fetchProduct();
+        fetchSuppliers();
     }, [productId]);
 
     const handleSubmit = async (e) => {
@@ -71,6 +86,7 @@ const EditarProduct = () => {
             Volume: Volume.current?.value,
             Package: Package.current?.value,
             ALaVenta: ALaVenta.current?.checked,
+            SupplierId: SupplierId.current?.value,
         };
 
         try {
@@ -109,13 +125,13 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="nombre" className="form-label">Nombre del Producto</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="nombre" 
-                                            ref={Name} 
-                                            defaultValue={product.Name} 
-                                            required 
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="nombre"
+                                            ref={Name}
+                                            defaultValue={product.Name}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -123,13 +139,13 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="precio" className="form-label">Precio</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="precio" 
-                                            ref={Price} 
-                                            defaultValue={product.Price} 
-                                            required 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="precio"
+                                            ref={Price}
+                                            defaultValue={product.Price}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -137,13 +153,13 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="costo" className="form-label">Costo</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="costo" 
-                                            ref={Cost} 
-                                            defaultValue={product.Cost} 
-                                            required 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="costo"
+                                            ref={Cost}
+                                            defaultValue={product.Cost}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -151,12 +167,12 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="descripcion" className="form-label">Descripción</label>
-                                        <textarea 
-                                            className="form-control" 
-                                            id="descripcion" 
-                                            ref={Description} 
-                                            rows="3" 
-                                            defaultValue={product.Description} 
+                                        <textarea
+                                            className="form-control"
+                                            id="descripcion"
+                                            ref={Description}
+                                            rows="3"
+                                            defaultValue={product.Description}
                                             required
                                         />
                                     </div>
@@ -165,13 +181,13 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="cantidad" className="form-label">Cantidad</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="cantidad" 
-                                            ref={Quantity} 
-                                            defaultValue={product.Quantity} 
-                                            required 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="cantidad"
+                                            ref={Quantity}
+                                            defaultValue={product.Quantity}
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -179,11 +195,11 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="categoria" className="form-label">Categoría</label>
-                                        <select 
-                                            className="form-control" 
-                                            id="categoria" 
-                                            ref={CategoryId} 
-                                            defaultValue={product.CategoryId} 
+                                        <select
+                                            className="form-control"
+                                            id="categoria"
+                                            ref={CategoryId}
+                                            defaultValue={product.CategoryId}
                                             required
                                         >
                                             <option value="">Seleccione una categoría</option>
@@ -199,12 +215,12 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="imagenURL" className="form-label">Imagen del Producto</label>
-                                        <input 
-                                            type="file" 
-                                            className="form-control" 
-                                            id="imagenURL" 
-                                            ref={ImageUrl} 
-                                            accept="image/*" 
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            id="imagenURL"
+                                            ref={ImageUrl}
+                                            accept="image/*"
                                         />
                                     </div>
                                 </div>
@@ -212,11 +228,11 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="base" className="form-label">Base</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="base" 
-                                            ref={Base} 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="base"
+                                            ref={Base}
                                             defaultValue={product.Base}
                                         />
                                     </div>
@@ -225,11 +241,11 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="altura" className="form-label">Altura (cm)</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="altura" 
-                                            ref={Height} 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="altura"
+                                            ref={Height}
                                             defaultValue={product.Height}
                                         />
                                     </div>
@@ -238,11 +254,11 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="peso" className="form-label">Peso (kg)</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="peso" 
-                                            ref={Weight} 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="peso"
+                                            ref={Weight}
                                             defaultValue={product.Weight}
                                         />
                                     </div>
@@ -251,11 +267,11 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="volumen" className="form-label">Volumen (m³)</label>
-                                        <input 
-                                            type="number" 
-                                            className="form-control" 
-                                            id="volumen" 
-                                            ref={Volume} 
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="volumen"
+                                            ref={Volume}
                                             defaultValue={product.Volume}
                                         />
                                     </div>
@@ -264,23 +280,44 @@ const EditarProduct = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="paquete" className="form-label">Paquete</label>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            id="paquete" 
-                                            ref={Package} 
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="paquete"
+                                            ref={Package}
                                             defaultValue={product.Package}
                                         />
                                     </div>
                                 </div>
+
+                                <div className="col-12 col-md-6">
+                                    <div className="mb-3">
+                                        <label htmlFor="proveedor" className="form-label">Proveedor</label>
+                                        <select
+                                            className="form-control"
+                                            id="proveedor"
+                                            ref={SupplierId}
+                                            value={product.SupplierId || ""}
+                                            onChange={(e) => setProduct({ ...product, SupplierId: e.target.value })}
+                                            required>
+                                            <option value="">Seleccione un proveedor</option>
+                                            {suppliers.map((supplier) => (
+                                                <option key={supplier.SupplierId} value={supplier.SupplierId}>
+                                                    {supplier.Name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <label htmlFor="alaventa" className="form-label">¿A la venta?</label>
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             //className="form-check-input"
-                                            id="alaventa" 
-                                            ref={ALaVenta} 
+                                            id="alaventa"
+                                            ref={ALaVenta}
                                             defaultChecked={product.ALaVenta}
                                         />
                                     </div>

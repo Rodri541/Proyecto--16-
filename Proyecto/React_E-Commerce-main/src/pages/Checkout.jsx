@@ -3,6 +3,7 @@ import { Footer, Navbar } from "../components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import API_URL from "../config";
 
 const Checkout = () => {
   const state = useSelector((state) => state.handleCart);
@@ -24,7 +25,7 @@ const Checkout = () => {
         email: localStorage.getItem("email"), 
       };
 
-      const response = await axios.post("http://localhost:3000/checkout", {
+      const response = await axios.post(`${API_URL}/checkout`, {
         items: cartItems,
         user: userData,
       });
