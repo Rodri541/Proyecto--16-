@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Sidebar, Navbar } from "../components";
 import toast from "react-hot-toast";
 import API_URL from "../config";
