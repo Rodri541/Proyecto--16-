@@ -6,6 +6,8 @@ const ACCESS_TOKEN = "APP_USR-2813772825895965-112617-112db10aa30998457e1886b1f8
 const handleWebhook = async (req, res) => {
   const { id, topic } = req.query;
 
+  console.log(id)
+
   if (topic === "payment") {
     try {
       const { default: fetch } = await import("node-fetch");
@@ -22,21 +24,36 @@ const handleWebhook = async (req, res) => {
       }
 
       const paymentData = await response.json();
-      const { status, metadata } = paymentData;
+      const { status, additional_info } = paymentData;
 
+      console.log(status)
       if (status === "approved") {
-        // Procesar cada producto en la metadata
-        const items = metadata.items; // Asegúrate de incluir los `items` en el metadata al crear la preferencia
-        console.log(items)
+        console.log("Pago aprobado. Procesando actualización de stock...");
+
+        // Obtener los productos de la información adicional
+        const items = additional_info?.items || [];
+        if (items.length === 0) {
+          console.error("No se encontraron productos en la transacción.");
+          return res.status(400).send("No se encontraron productos en la transacción.");
+        }
+
+        // Procesar cada producto
         for (const item of items) {
-          const updateResult = await updateProductStock(item.id, item.quantity); // Llama a la función desde el controlador de productos
-          if (!updateResult.success) {
-            console.error(`Error al actualizar el stock: ${updateResult.error}`);
-          } else {
-            console.log(
-              `Stock actualizado para el producto ${item.id}. Nuevo stock: ${updateResult.newStock}`
-            );
+          const productId = item.id;
+          const quantity = item.quantity;
+
+          if (!productId || !quantity) {
+            console.error(`Datos incompletos para el producto: ${JSON.stringify(item)}`);
+            return res.status(400).send("Datos incompletos para los productos.");
           }
+
+          const updateResult = await updateProductStock(productId, quantity); // Llama a la función desde el controlador de productos
+          if (!updateResult.success) {
+            console.error(`Error al actualizar el stock para el producto ${productId}: ${updateResult.error}`);
+            return res.status(500).send(`Error al actualizar el stock para el producto ${productId}.`);
+          }
+
+          console.log(`Stock actualizado para el producto ${productId}. Nuevo stock: ${updateResult.newStock}`);
         }
 
         return res.status(200).send("Notificación procesada y stock actualizado");
