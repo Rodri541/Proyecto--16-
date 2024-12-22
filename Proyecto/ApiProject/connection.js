@@ -1,9 +1,9 @@
 const sql = require('mssql');
 
 const dbSettings = {
-  user: "sa",
-  password: "sololetras",
-  server: "localhost",
+  user: "admin2024",
+  password: "sololetras123.",
+  server: "serverdeploytaller.database.windows.net",
   database: "laCandelaDB",
   options: {
     encrypt: true,
@@ -28,3 +28,9 @@ password: "sololetras123.",
 server: "serverdeploytaller.database.windows.net",
 database: "laCandelaDB",
 */
+/*
+user: "sa",
+password: "sololetras",
+server: "localhost",
+database: "laCandelaDB",
+  */
