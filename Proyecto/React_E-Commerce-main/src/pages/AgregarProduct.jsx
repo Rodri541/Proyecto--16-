@@ -1,10 +1,9 @@
-import API_URL from "../config";
 import React, { useRef, useEffect, useState } from "react";
 import { Sidebar, Navbar } from "../components";
 import toast from "react-hot-toast";
+import API_URL from "../config";
 
 export const AgregarProduct = () => {
-
     const Name = useRef(null);
     const Price = useRef(null);
     const Cost = useRef(null);
@@ -18,40 +17,39 @@ export const AgregarProduct = () => {
     const Volume = useRef(null);
     const Package = useRef(null);
     const SupplierId = useRef(null);
+
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch(`${API_URL}/categorias`);
-                if (!response.ok) throw new Error("Error al cargar categorías");
-                const data = await response.json();
-                setCategories(data);
+                const [categoriesResponse, suppliersResponse] = await Promise.all([
+                    fetch(`${API_URL}/categorias`),
+                    fetch(`${API_URL}/proveedores`),
+                ]);
+
+                if (!categoriesResponse.ok || !suppliersResponse.ok) {
+                    throw new Error("Error al cargar datos");
+                }
+
+                const [categoriesData, suppliersData] = await Promise.all([
+                    categoriesResponse.json(),
+                    suppliersResponse.json(),
+                ]);
+
+                setCategories(categoriesData);
+                setSuppliers(suppliersData);
             } catch (error) {
-                console.error("Error al cargar las categorías:", error);
-                toast.error("No se pudieron cargar las categorías");
+                console.error("Error al cargar categorías o proveedores:", error);
+                toast.error("Error al cargar datos necesarios");
             }
         };
 
-        const fetchSuppliers = async () => {
-            try {
-                const response = await fetch(`${API_URL}/proveedores`);
-                if (!response.ok) throw new Error("Error al cargar proveedores");
-                const data = await response.json();
-                setSuppliers(data);
-            } catch (error) {
-                console.error("Error al cargar los proveedores:", error);
-                toast.error("No se pudieron cargar los proveedores");
-            }
-        };
-
-        fetchSuppliers();
-        fetchCategories();
+        fetchData();
     }, []);
 
-
-    const crearProduct = (e) => {
+    const crearProduct = async (e) => {
         e.preventDefault();
 
         const productData = {
@@ -60,7 +58,7 @@ export const AgregarProduct = () => {
             Cost: Cost.current?.value,
             Description: Description.current?.value,
             Quantity: Quantity.current?.value,
-            CategoryId: CategoryId.current?.value, //va a ser un select con todas las categorias.
+            CategoryId: CategoryId.current?.value,
             ImageUrl: ImageUrl.current?.value,
             Base: Base.current?.value,
             Height: Height.current?.value,
@@ -70,27 +68,24 @@ export const AgregarProduct = () => {
             SupplierId: SupplierId.current?.value,
         };
 
-        fetch(`${API_URL}/productos`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(productData),
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    toast.success("Producto creado");
-                    //navigate("/login");
-                    return response.json();
-                } else {
-                    toast.error("Creacion no realizada");
-                    throw new Error("Creacion fallida");
-                }
-            })
-            .catch((err) => {
-                console.error("Error en la creacion:", err);
-                toast.error("Ocurrió un error en la creacion");
+        try {
+            const response = await fetch(`${API_URL}/productos`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(productData),
             });
+
+            if (!response.ok) {
+                throw new Error("Creación no realizada");
+            }
+
+            toast.success("Producto creado correctamente");
+        } catch (error) {
+            console.error("Error al crear el producto:", error);
+            toast.error("Error al crear el producto");
+        }
     };
 
     return (
