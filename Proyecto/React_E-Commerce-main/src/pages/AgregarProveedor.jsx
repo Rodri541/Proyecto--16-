@@ -36,7 +36,6 @@ export const AgregarProveedor = () => {
                 if (emailExistente) {
                     toast.error("Email ya usado");
                     throw new Error("Email ya usado");
-                    console.log(emailExistente)
                 }
 
                 fetch(`${API_URL}/proveedores`, {
