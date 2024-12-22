@@ -2,69 +2,53 @@ const { updateProductStock } = require("./products.controllers.js");
 
 const ACCESS_TOKEN = "APP_USR-2813772825895965-112617-112db10aa30998457e1886b1f8cf6787-2114869553";
 
+// Función para manejar las notificaciones del webhook
 const handleWebhook = async (req, res) => {
-  try {
-    console.log("Cuerpo del webhook recibido:", req.body);
+  const { id, topic } = req.query;
 
-    const paymentId = req.body.data?.id;
-    if (!paymentId) {
-      console.error("ID del pago no proporcionado en el cuerpo del webhook.");
-      return res.status(400).json({ error: "ID del pago no proporcionado." });
-    }
+  if (topic === "payment") {
+    try {
+      const { default: fetch } = await import("node-fetch");
 
-    console.log("ID del pago recibido:", paymentId);
+      // Consultar los detalles del pago en MercadoPago
+      const response = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
 
-    // Importación dinámica de fetch
-    const { default: fetch } = await import("node-fetch");
-
-    const paymentResponse = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
-
-    if (!paymentResponse.ok) {
-      const errorMessage = await paymentResponse.text();
-      console.error(`Error al obtener detalles del pago: ${paymentResponse.status} - ${errorMessage}`);
-      return res.status(paymentResponse.status).json({ error: `Error al procesar el webhook: ${errorMessage}` });
-    }
-
-    const paymentDetails = await paymentResponse.json();
-    console.log("Detalles del pago:", paymentDetails);
-
-    const items = paymentDetails.additional_info?.items;
-    if (!items || items.length === 0) {
-      console.error("No se encontraron productos en la transacción.");
-      return res.status(400).json({ error: "No se encontraron productos en la transacción." });
-    }
-
-    for (const item of items) {
-      const productId = item.id;
-      const quantity = item.quantity;
-
-      if (!productId) {
-        console.error(`No se pudo determinar un identificador para el producto: ${JSON.stringify(item)}`);
-        return res.status(400).json({ error: "Falta un identificador para el producto." });
+      if (!response.ok) {
+        throw new Error(`Error al obtener los detalles del pago: ${response.statusText}`);
       }
 
-      if (!quantity || quantity <= 0) {
-        console.error(`Cantidad inválida para el producto ${productId}: ${quantity}`);
-        return res.status(400).json({ error: `Cantidad inválida para el producto ${productId}.` });
-      }
+      const paymentData = await response.json();
+      const { status, metadata } = paymentData;
 
-      const result = await updateProductStock(productId, quantity);
-      if (!result.success) {
-        console.error(`Error al actualizar el stock para el producto ${productId} : ${result.error}`);
-        return res.status(400).json({ error: result.error });
-      }
+      if (status === "approved") {
+        // Procesar cada producto en la metadata
+        const items = metadata.items; // Asegúrate de incluir los `items` en el metadata al crear la preferencia
+        for (const item of items) {
+          const updateResult = await updateProductStock(item.id, item.quantity); // Llama a la función desde el controlador de productos
+          if (!updateResult.success) {
+            console.error(`Error al actualizar el stock: ${updateResult.error}`);
+          } else {
+            console.log(
+              `Stock actualizado para el producto ${item.id}. Nuevo stock: ${updateResult.newStock}`
+            );
+          }
+        }
 
-      console.log(`Stock actualizado para producto ${productId}: nuevo stock = ${result.newStock}`);
+        return res.status(200).send("Notificación procesada y stock actualizado");
+      } else {
+        console.log(`Pago no aprobado. Estado: ${status}`);
+        return res.status(200).send("Pago no aprobado");
+      }
+    } catch (error) {
+      console.error("Error al procesar el webhook:", error.message);
+      return res.status(500).send("Error al procesar la notificación");
     }
-
-    res.status(200).send("Stock actualizado correctamente.");
-  } catch (error) {
-    console.error("Error en el webhook:", error.message);
-    res.status(500).json({ error: "Error al procesar el webhook." });
+  } else {
+    return res.status(400).send("Evento no soportado");
   }
 };
 

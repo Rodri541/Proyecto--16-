@@ -191,11 +191,9 @@ const validateFields = (userData) => {
 
   // Validar Password
   if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(
-      userData.Password
-    )
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(userData.Password)
   ) {
-    return "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial.";
+    return "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula y un número.";
   }
 
   // Validar Birthdate

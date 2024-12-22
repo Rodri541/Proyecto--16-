@@ -12,14 +12,12 @@ const createPreference = async (req, res) => {
       currency_id: "UYU",
     })),
     back_urls: {
-      success: "https://apiprueba-ekhkb4ebchfqhubg.canadacentral-01.azurewebsites.net/webhook", 
     },
     auto_return: "approved", 
     binary_mode: true, 
   };
 
   try {
-    // Importación dinámica de fetch
     const { default: fetch } = await import("node-fetch");
 
     const response = await fetch("https://api.mercadopago.com/checkout/preferences", {
