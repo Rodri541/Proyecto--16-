@@ -27,6 +27,7 @@ const handleWebhook = async (req, res) => {
       if (status === "approved") {
         // Procesar cada producto en la metadata
         const items = metadata.items; // Asegúrate de incluir los `items` en el metadata al crear la preferencia
+        console.log(items)
         for (const item of items) {
           const updateResult = await updateProductStock(item.id, item.quantity); // Llama a la función desde el controlador de productos
           if (!updateResult.success) {
