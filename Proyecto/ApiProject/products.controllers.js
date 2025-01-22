@@ -76,9 +76,9 @@ const getProduct = async (req, res) => {
   }
 };
 
-const AZURE_STORAGE_CONNECTION_STRING = 'DefaultEndpointsProtocol=https;AccountName=lacandelaalmacenamiento;AccountKey=yLrwbIGPnfkqZVHUevFj+Qvr4lzXXg91QzanZekpSUu1PYmnAIOnQ29XMpVm+z103IlWaesaKyoR+ASt5eb/uw==;EndpointSuffix=core.windows.net';
+const storageKey = process.env.AZURE_STORAGE_KEY;
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+const blobServiceClient = BlobServiceClient.fromConnectionString(storageKey);
 const containerName = 'contenedor';
 
 const uploadImageToAzureBlob = async (file) => {
