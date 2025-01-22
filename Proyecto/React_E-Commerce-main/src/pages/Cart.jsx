@@ -33,6 +33,8 @@ const Cart = () => {
     dispatch(delCart(product));
   };
 
+  let isOverStock = false;
+
   const ShowCart = () => {
     let subtotal = 0;
     let totalItems = 0;
@@ -41,6 +43,10 @@ const Cart = () => {
     state.forEach((item) => {
       subtotal += item.Price * item.qty;
       totalItems += item.qty;
+
+      if (item.qty > item.Quantity) {
+        isOverStock = true;
+      }
     });
 
     return (
@@ -119,10 +125,17 @@ const Cart = () => {
                     </ul>
                     <Link
                       to="/checkout"
-                      className="btn btn-dark btn-lg btn-block"
-                    >
+                      className={`btn btn-lg btn-block ${isOverStock ? "btn-secondary disabled" : "btn-dark"}`} 
+                      onClick={(e) => {
+                        if (isOverStock) e.preventDefault();
+                      }}>
                       Ir a pagar
                     </Link>
+                    {isOverStock && (
+                      <p className="text-danger mt-2">
+                        La cantidad seleccionada excede el stock disponible.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

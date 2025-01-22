@@ -26,6 +26,9 @@ import {
   ListaProveedores,
   AgregarProveedor,
   EditarProveedor,
+  Orders,
+  ProductDetails,
+  Estadisticas,
 } from "./pages";
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -48,14 +51,9 @@ root.render(
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/listaproducts" element={<ListaProducts />} />
-          <Route path="/listaproveedores" element={<ListaProveedores />} />
-          <Route path="/agregarproveedor" element={<AgregarProveedor />} />
 
-          <Route path="/editarproveedor/:proveedorId" element={<EditarProveedor />} />
-          <Route path="/editarproduct/:productId" element={<EditarProduct />} />
-         
-          <Route path="/agregarproduct" element={<AgregarProduct />} />
+
+          {/* LOGIN */}
           <Route
             path="/login"
             element={
@@ -64,10 +62,13 @@ root.render(
               </PublicRoute>
             }
           />
+
           <Route path="/register" element={<Register />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/productos/*" element={<PageNotFound />} />
+
+          {/* RUTAS PROTEGIDAS SOLO PARA ADMIN */}
           <Route
             path="/dashboard"
             element={
@@ -76,6 +77,66 @@ root.render(
               </ProtectedRoute>
             }
           />
+
+          <Route path="/listaproducts" element={
+            <ProtectedRoute>
+              <ListaProducts/>
+            </ProtectedRoute>
+          }
+          />
+
+          <Route path="/listaproveedores" element={
+            <ProtectedRoute>
+              <ListaProveedores />
+            </ProtectedRoute>
+          }
+          />
+            
+          <Route path="/agregarproveedor" element={
+            <ProtectedRoute>
+              <AgregarProveedor />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/orders" element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/estadisticas" element={
+            <ProtectedRoute>
+              <Estadisticas />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/ProductDetailDash/:productId" element={
+            <ProtectedRoute>
+              < ProductDetails />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/editarproveedor/:proveedorId" element={
+            <ProtectedRoute>
+              <EditarProveedor />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/editarproduct/:productId" element={
+            <ProtectedRoute>
+              <EditarProduct />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/agregarproduct" element={
+            <ProtectedRoute>
+              <AgregarProduct />
+            </ProtectedRoute>
+          } />
+
         </Routes>
       </Provider>
     </ScrollToTop>

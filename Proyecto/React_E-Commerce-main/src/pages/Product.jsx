@@ -36,7 +36,7 @@ const Product = () => {
 
       try {
         const response = await axios.get(`${API_URL}/productos/${id}`);
-        
+
         setProduct(response.data);
 
         const responseCat = await axios.get(
@@ -97,18 +97,14 @@ const Product = () => {
     <div className="container my-5 py-4">
       <div className="row align-items-center">
         <div className="col-lg-6 text-center">
-          <img
-            className="img-fluid rounded shadow-sm"
+          <img className="img-fluid rounded shadow-sm"
             src={product.ImageUrl}
-            alt={product.Name}
-          />
+            alt={product.Name} />
         </div>
         <div className="col-lg-6">
           <h4 className="text-muted mb-2">{category.Name}</h4>
           <h1 className="display-6 fw-bold mb-3">{product.Name}</h1>
-          <p className="text-warning fs-5 mb-1">
-            {product.Rate} <i className="fa fa-star"></i>
-          </p>
+         
           <h2 className="text-success fw-bold mb-4">${product.Price}</h2>
           <p className="text-secondary">{product.Description}</p>
 
@@ -121,8 +117,7 @@ const Product = () => {
                 id="sizeSelect"
                 value={id}
                 onChange={handleSelectChange}
-                className="form-select"
-              >
+                className="form-select">
                 {relatedProducts.map((item) => (
                   <option key={item.ProductId} value={item.ProductId}>
                     {item.Base} x {item.Height} cm - ${item.Price}
@@ -141,8 +136,7 @@ const Product = () => {
                 id="colorSelect"
                 value={selectedColor}
                 onChange={handleColorChange}
-                className="form-select"
-              >
+                className="form-select">
                 {colors.map((color) => (
                   <option key={color.ColorId} value={color.Name}>
                     {color.Name}
@@ -157,13 +151,15 @@ const Product = () => {
             onClick={() => {
               toast.success("Añadido al carrito");
               addProduct(product, selectedColor);
-            }}
-          >
+            }}>
             Agregar al carrito
           </button>
           <Link to="/cart" className="btn btn-outline-secondary">
             Ir al carrito
           </Link>
+          <div className="mt-3">
+            <p className="text-secondary">Stock restante: {product.Quantity}</p>
+          </div>
         </div>
       </div>
     </div>

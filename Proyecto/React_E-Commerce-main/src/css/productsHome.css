@@ -2,11 +2,17 @@
   background: #FF7F32;
 }
 
-/* Contenedor de la paginación alineado a la derecha */
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  margin-top: 20px;
+}
+
+
 .pagination {
   display: flex;
   justify-content: flex-end;
-  /* Alineación a la derecha */
   align-items: center;
   margin-right: 20px;
   margin-bottom: 20px;

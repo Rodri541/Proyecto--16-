@@ -1,7 +1,11 @@
-import React from "react";
-import '../css/footer.css';
+import React, { useState, useEffect } from "react";
+import "../css/footer.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import API_URL from "../config";
 
 const Footer = () => {
+
   return (
     <>
       <footer className="footer">

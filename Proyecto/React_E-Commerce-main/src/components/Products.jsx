@@ -72,8 +72,7 @@ const Products = () => {
             <div
               id={product.ProductId}
               key={product.ProductId}
-              className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
-            >
+              className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
               <div className="card text-center h-100" id="carta">
                 <img
                   className="card-img-top p-3"
@@ -95,8 +94,7 @@ const Products = () => {
                 <div className="card-body">
                   <Link
                     to={`/productos/${product.ProductId}`}
-                    className="btn btn-dark m-1"
-                  >
+                    className="btn btn-dark m-1">
                     Mostrar
                   </Link>
                 </div>
@@ -109,27 +107,23 @@ const Products = () => {
         <div className="pagination">
           <button
             onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-          >
+            disabled={currentPage === 1}>
             <i className="fa fa-angle-double-left"></i>
           </button>
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
+            disabled={currentPage === 1}>
             <i className="fa fa-angle-left"></i>
           </button>
           <span className="m-2">{` ${currentPage} de ${totalPages} `}</span>
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
+            disabled={currentPage === totalPages}>
             <i className="fa fa-angle-right"></i>
           </button>
           <button
             onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-          >
+            disabled={currentPage === totalPages}>
             <i className="fa fa-angle-double-right"></i>
           </button>
         </div>

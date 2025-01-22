@@ -59,7 +59,6 @@ export const AgregarProduct = () => {
             Description: Description.current?.value,
             Quantity: Quantity.current?.value,
             CategoryId: CategoryId.current?.value,
-            ImageUrl: ImageUrl.current?.value,
             Base: Base.current?.value,
             Height: Height.current?.value,
             Weight: Weight.current?.value,
@@ -68,23 +67,40 @@ export const AgregarProduct = () => {
             SupplierId: SupplierId.current?.value,
         };
 
-        try {
-            const response = await fetch(`${API_URL}/productos`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(productData),
-            });
+        const image = ImageUrl.current?.files[0];
+        if (image) {
+            const formData = new FormData();
+            formData.append("image", image);
+            formData.append("Name", productData.Name);
+            formData.append("Price", productData.Price);
+            formData.append("Cost", productData.Cost);
+            formData.append("Description", productData.Description);
+            formData.append("Quantity", productData.Quantity);
+            formData.append("CategoryId", productData.CategoryId);
+            formData.append("Base", productData.Base);
+            formData.append("Height", productData.Height);
+            formData.append("Weight", productData.Weight);
+            formData.append("Volume", productData.Volume);
+            formData.append("Package", productData.Package);
+            formData.append("SupplierId", productData.SupplierId);
 
-            if (!response.ok) {
-                throw new Error("Creación no realizada");
+            try {
+                const response = await fetch(`${API_URL}/productos`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Creación no realizada");
+                }
+
+                toast.success("Producto creado correctamente");
+            } catch (error) {
+                console.error("Error al crear el producto:", error);
+                toast.error("Error al crear el producto");
             }
-
-            toast.success("Producto creado correctamente");
-        } catch (error) {
-            console.error("Error al crear el producto:", error);
-            toast.error("Error al crear el producto");
+        } else {
+            toast.error("No se ha seleccionado una imagen");
         }
     };
 

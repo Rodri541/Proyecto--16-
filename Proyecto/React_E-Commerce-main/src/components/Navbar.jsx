@@ -7,29 +7,48 @@ import '../css/navbar.css';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const estaLogueado = localStorage.getItem("id");
-    setIsAuthenticated(!!estaLogueado);
-  }, []);
+  const [roleId, setRoleId] = useState(null);
 
   const state = useSelector(state => state.handleCart);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("id");
-    localStorage.clear();
-    localStorage.removeItem("cart");
-    setIsAuthenticated(false);
-    navigate('/login');
-    window.location.reload();
-  };
+  
 
-  const isAdminLoggedIn = () => {
-    const email = localStorage.getItem("email"); 
-    return email === "admin@hotmail.com";
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    const storedRoleId = localStorage.getItem("roleId");
+    
+
+    if (id && storedRoleId) {
+      setIsAuthenticated(true);
+      setRoleId(storedRoleId);
+    } else {
+      setIsAuthenticated(false);
+      setRoleId(null);
+    }
+  }, []);
+
+  // LOGOUT
+  const handleLogout = () => {
+    
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("roleId");
+    localStorage.removeItem("userName");
+  
+    
+    localStorage.removeItem("cart");
+  
+
+    setIsAuthenticated(false);
+    setRoleId(null); 
+    window.location.reload();
+
+    navigate('/login');
   };
-   
+ 
+
   return (
     <nav className="navbar navbar-expand-lg py-3 sticky-top">
       <div className="container d-flex justify-content-between align-items-center">
@@ -62,13 +81,13 @@ const Navbar = () => {
           <div className="buttons text-center">
             {isAuthenticated ? (
               <>
-                {isAdminLoggedIn() ? (
+                {roleId === "1" && (
                   <NavLink to="/Dashboard" className="btn btn-outline-dark m-2">
-                    <i className="fa fa-sign-in-alt mr-1"></i> DashBoard
+                    <i className="fa fa-sign-in-alt mr-1"></i> Dashboard
                   </NavLink>
-                ) : null}
+                )}
                 <button className="btn btn-outline-dark m-2" onClick={handleLogout}>
-                  <i className="fa fa-sign-out-alt mr-1"></i> Cerrar Sesion
+                  <i className="fa fa-sign-out-alt mr-1"></i> Cerrar Sesión
                 </button>
               </>
             ) : (
@@ -89,6 +108,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

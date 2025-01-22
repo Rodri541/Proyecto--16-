@@ -101,13 +101,6 @@ export const AgregarProveedor = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-12 col-md-6">
-                                    <div className="mb-3">
-                                        <label htmlFor="lastPurchaseDate" className="form-label">Fecha de la ultima compra</label>
-                                        <input type="date" className="form-control" id="lastPurchaseDate" ref={LastPurchaseDate} />
-                                    </div>
-                                </div>
-
                                 <div className="col-12">
                                     <button className="my-2 mx-auto btn btn-dark" type="submit">
                                         Crear

@@ -1,3 +1,6 @@
+const { BlobServiceClient } = require('@azure/storage-blob');
+const fs = require('fs');
+const path = require('path');
 const { getConnection } = require("./connection.js");
 const sql = require("mssql");
 
@@ -73,53 +76,75 @@ const getProduct = async (req, res) => {
   }
 };
 
+const AZURE_STORAGE_CONNECTION_STRING = 'DefaultEndpointsProtocol=https;AccountName=lacandelaalmacenamiento;AccountKey=yLrwbIGPnfkqZVHUevFj+Qvr4lzXXg91QzanZekpSUu1PYmnAIOnQ29XMpVm+z103IlWaesaKyoR+ASt5eb/uw==;EndpointSuffix=core.windows.net';
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+const containerName = 'contenedor';
+
+const uploadImageToAzureBlob = async (file) => {
+  const containerClient = blobServiceClient.getContainerClient(containerName);
+  const blobName = `product-${Date.now()}-${file.originalname}`;
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+  const uploadBlobResponse = await blockBlobClient.uploadFile(file.path);
+  console.log(`Subido a ${blobName} exitosamente`, uploadBlobResponse);
+
+  return blockBlobClient.url;
+};
+
 const postProduct = async (req, res) => {
   try {
-    const pool = await getConnection();
-    const result = await pool
-      .request()
-      .input("name", sql.NVarChar(100), req.body.Name)
-      .input("price", sql.Decimal(18, 2), req.body.Price)
-      .input("cost", sql.Decimal(18, 2), req.body.Cost)
-      .input("description", sql.NVarChar(255), req.body.Description)
-      .input("quantity", sql.Int, req.body.Quantity)
-      .input("categoryId", sql.Int, req.body.CategoryId)
-      .input("imageUrl", sql.VarChar(255), req.body.ImageUrl)
-      .input("creationDate", sql.DateTime, new Date())
-      .input("rate", sql.Decimal(3, 2), req.body.Rate)
-      .input("base", sql.Decimal(10, 2), req.body.Base)
-      .input("height", sql.Decimal(10, 2), req.body.Height)
-      .input("weight", sql.Decimal(10, 2), req.body.Weight)
-      .input("volume", sql.Decimal(10, 2), req.body.Volume)
-      .input("package", sql.Int, req.body.Package)
-      .input("aLaVenta", sql.Bit, req.body.ALaVenta)
-      .input("supplierId", sql.Int, req.body.SupplierId)
-      .query(`
-        INSERT INTO Products 
-        (Name, Price, Cost, Description, Quantity, CategoryId, ImageUrl, CreationDate, Rate, Base, Height, Weight, Volume, Package, ALaVenta, SupplierId) 
-        VALUES 
-        (@name, @price, @cost, @description, @quantity, @categoryId, @imageUrl, @creationDate, @rate, @base, @height, @weight, @volume, @package, @aLaVenta, @supplierId); 
-        SELECT SCOPE_IDENTITY() AS Id
-      `);
+    if (req.file) {
+      const imageUrl = await uploadImageToAzureBlob(req.file);
 
-    res.json({
-      Id: result.recordset[0].Id,
-      Name: req.body.Name,
-      Price: req.body.Price,
-      Cost: req.body.Cost,
-      Description: req.body.Description,
-      Quantity: req.body.Quantity,
-      CategoryId: req.body.CategoryId,
-      ImageUrl: req.body.ImageUrl,
-      CreationDate: req.body.CreationDate,
-      Base: req.body.Base || null,
-      Height: req.body.Height || null,
-      Weight: req.body.Weight || null,
-      Volume: req.body.Volume || null,
-      Package: req.body.Package || null,
-      ALaVenta: req.body.ALaVenta,
-      SupplierId: req.body.SupplierId,
-    });
+      const pool = await getConnection();
+      const result = await pool
+        .request()
+        .input("name", sql.NVarChar(100), req.body.Name)
+        .input("price", sql.Decimal(18, 2), req.body.Price)
+        .input("cost", sql.Decimal(18, 2), req.body.Cost)
+        .input("description", sql.NVarChar(255), req.body.Description)
+        .input("quantity", sql.Int, req.body.Quantity)
+        .input("categoryId", sql.Int, req.body.CategoryId)
+        .input("imageUrl", sql.VarChar(255), imageUrl)
+        .input("creationDate", sql.DateTime, new Date())
+        .input("rate", sql.Decimal(3, 2), req.body.Rate)
+        .input("base", sql.Decimal(10, 2), req.body.Base)
+        .input("height", sql.Decimal(10, 2), req.body.Height)
+        .input("weight", sql.Decimal(10, 2), req.body.Weight)
+        .input("volume", sql.Decimal(10, 2), req.body.Volume)
+        .input("package", sql.Int, req.body.Package)
+        .input("aLaVenta", sql.Bit, req.body.ALaVenta)
+        .input("supplierId", sql.Int, req.body.SupplierId)
+        .query(`
+                    INSERT INTO Products 
+                    (Name, Price, Cost, Description, Quantity, CategoryId, ImageUrl, CreationDate, Rate, Base, Height, Weight, Volume, Package, ALaVenta, SupplierId) 
+                    VALUES 
+                    (@name, @price, @cost, @description, @quantity, @categoryId, @imageUrl, @creationDate, @rate, @base, @height, @weight, @volume, @package, @aLaVenta, @supplierId); 
+                    SELECT SCOPE_IDENTITY() AS Id
+                `);
+
+      res.json({
+        Id: result.recordset[0].Id,
+        Name: req.body.Name,
+        Price: req.body.Price,
+        Cost: req.body.Cost,
+        Description: req.body.Description,
+        Quantity: req.body.Quantity,
+        CategoryId: req.body.CategoryId,
+        ImageUrl: imageUrl,
+        CreationDate: req.body.CreationDate,
+        Base: req.body.Base || null,
+        Height: req.body.Height || null,
+        Weight: req.body.Weight || null,
+        Volume: req.body.Volume || null,
+        Package: req.body.Package || null,
+        ALaVenta: req.body.ALaVenta,
+        SupplierId: req.body.SupplierId,
+      });
+    } else {
+      res.status(400).json({ message: 'No se ha recibido una imagen' });
+    }
   } catch (e) {
     return res.json({ message: e.message });
   }
@@ -177,6 +202,40 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getTop10ProductsMostSold = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(`SELECT TOP 10 
+    ProductId, 
+    Name, 
+    Price, 
+    soldCount
+  FROM Products
+  ORDER BY soldCount DESC, ProductId ASC
+  `);
+    res.json(result.recordset);
+  } catch (e) {
+    return res.json({ message: e.message })
+  }
+}
+
+const getTop10ProductsLeastSold = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(`SELECT TOP 10 
+    ProductId, 
+    Name, 
+    Price, 
+    soldCount
+FROM Products
+ORDER BY soldCount ASC, ProductId ASC
+  `);
+    res.json(result.recordset);
+  } catch (e) {
+    return res.json({ message: e.message })
+  }
+}
+
 const updateProductStock = async (productId, quantity) => {
   try {
     if (quantity <= 0) {
@@ -189,8 +248,8 @@ const updateProductStock = async (productId, quantity) => {
 
     const result = await transaction
       .request()
-      .input("productId", sql.Int, productId) 
-      .query("SELECT Quantity FROM Products WHERE ProductId = @productId");
+      .input("productId", sql.Int, productId)
+      .query("SELECT Quantity, soldCount FROM Products WHERE ProductId = @productId");
 
     if (result.recordset.length === 0) {
       await transaction.rollback();
@@ -198,6 +257,7 @@ const updateProductStock = async (productId, quantity) => {
     }
 
     const currentStock = result.recordset[0].Quantity;
+    const currentSoldCount = result.recordset[0].soldCount;
 
     if (currentStock < quantity) {
       await transaction.rollback();
@@ -205,16 +265,18 @@ const updateProductStock = async (productId, quantity) => {
     }
 
     const updatedStock = currentStock - quantity;
+    const updatedSoldCount = currentSoldCount + quantity;
 
     await transaction
       .request()
       .input("productId", sql.Int, productId)
       .input("quantity", sql.Int, updatedStock)
-      .query("UPDATE Products SET Quantity = @quantity WHERE ProductId = @productId");
+      .input("soldCount", sql.Int, updatedSoldCount)
+      .query("UPDATE Products SET Quantity = @quantity, SoldCount = @soldCount WHERE ProductId = @productId");
 
     await transaction.commit();
 
-    return { success: true, newStock: updatedStock };
+    return { success: true, newStock: updatedStock, newSoldCount: updatedSoldCount };
   } catch (error) {
     console.error(`Error al actualizar el stock para el producto ${productId}:`, error.message);
     return { success: false, error: "Error al actualizar el stock." };
@@ -230,5 +292,7 @@ module.exports = {
   postProduct,
   putProduct,
   deleteProduct,
-  updateProductStock
+  updateProductStock,
+  getTop10ProductsMostSold,
+  getTop10ProductsLeastSold
 };

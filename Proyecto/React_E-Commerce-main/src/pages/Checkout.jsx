@@ -38,6 +38,8 @@ const Checkout = () => {
     } finally {
       setLoading(false);
     }
+    localStorage.removeItem("cart");
+  
   };
 
   const EmptyCart = () => (

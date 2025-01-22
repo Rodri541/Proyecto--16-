@@ -1,12 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import "../css/sidebar.css"
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaList, FaPlus, FaTruck, FaUserPlus } from "react-icons/fa";
+import { FaList, FaPlus, FaTruck, FaUserPlus, FaFileAlt, FaChartBar } from "react-icons/fa";
 
 const Dashboard = () => {
   return (
-    <div className="d-flex flex-column min-vh-100 bg-light">
+    <div className="d-flex flex-column min-vh-50">
       {/* Header and Dashboard Buttons */}
       <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1">
         <h2 className="mb-4">Bienvenido al Dashboard</h2>
@@ -23,9 +24,17 @@ const Dashboard = () => {
             <FaTruck size={50} className="mb-2" />
             <span>Lista de proveedores</span>
           </NavLink>
-          <NavLink to="/AgregarProveedor" className="btn btn-info d-flex flex-column align-items-center p-4 shadow">
+          <NavLink to="/AgregarProveedor" className="btn btn-danger d-flex flex-column align-items-center p-4 shadow">
             <FaUserPlus size={50} className="mb-2" />
             <span>Agregar proveedor</span>
+          </NavLink>
+          <NavLink to="/Orders" className="btn btn-dark d-flex flex-column align-items-center p-4 shadow">
+            <FaFileAlt size={50} className="mb-2" />
+            <span>Lista de ordenes</span>
+          </NavLink>
+          <NavLink to="/Estadisticas" className="btn btn-info d-flex flex-column align-items-center p-4 shadow">
+            <FaChartBar size={50} className="mb-2" />
+            <span>Estadisticas</span>
           </NavLink>
         </div>
       </div>

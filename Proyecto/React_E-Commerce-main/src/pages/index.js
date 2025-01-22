@@ -15,3 +15,6 @@ export { default as EditarProduct } from './EditarProduct';
 export { default as ListaProveedores } from './ListaProveedores';
 export { default as AgregarProveedor } from './AgregarProveedor';
 export { default as EditarProveedor } from './EditarProveedor';
+export { default as Orders } from './Orders';
+export { default as ProductDetails} from './ProductDetailDash';
+export { default as Estadisticas} from './Estadisticas';

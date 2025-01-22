@@ -185,7 +185,7 @@ const validateFields = (userData) => {
   }
 
   // Validar Email
-  if (!/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/.test(userData.Email)) {
+  if (!/^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/.test(userData.Email)) { 
     return "El correo electrónico no es válido.";
   }
 
