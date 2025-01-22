@@ -3,11 +3,9 @@ import { Sidebar, Navbar } from "../components";
 import API_URL from "../config";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 
 export const Orders = () => {
-  const navigate = useNavigate();
   const [pedidos, setPedidos] = useState([]);
   const [filteredPedidos, setFilteredPedidos] = useState([]);
   const [loading, setLoading] = useState(false);
