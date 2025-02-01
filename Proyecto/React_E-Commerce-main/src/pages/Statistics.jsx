@@ -67,7 +67,7 @@ const Statistics = () => {
         },
         scales: {
             y: {
-                beginAtZero: true, // Asegura que el eje Y comience desde 0
+                beginAtZero: true, 
             },
         },
     };

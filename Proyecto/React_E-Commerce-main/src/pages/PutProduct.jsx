@@ -100,7 +100,7 @@ const PutProduct = () => {
 
             if (response.status === 200) {
                 toast.success("Producto editado");
-                navigate("/ListaProducts");
+                navigate("/listaProductos");
             } else {
                 toast.error("No se editó correctamente");
             }
