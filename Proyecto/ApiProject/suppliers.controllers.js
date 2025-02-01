@@ -22,7 +22,6 @@ module.exports = {
         .input("id", sql.Int, req.params.id)
         .query("SELECT * FROM Suppliers where SupplierId = @id");
 
-      console.log(result);
 
       if (result.rowsAffected[0] == 0) {
         return res.status(404).json({ message: "Supplier not found" });
