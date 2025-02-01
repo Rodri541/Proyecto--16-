@@ -1,8 +1,16 @@
 // Retrieve initial state from localStorage if available
 const getInitialCart = () => {
-  const storedCart = localStorage.getItem("cart");
-  return storedCart ? JSON.parse(storedCart) : [];
+  try {
+    const storedCart = localStorage.getItem("cart");
+    const parsedCart = storedCart ? JSON.parse(storedCart) : [];
+    // Asegurarse de que sea un array válido
+    return Array.isArray(parsedCart) ? parsedCart : [];
+  } catch (error) {
+    console.error("Error al cargar el carrito del localStorage:", error);
+    return [];
+  }
 };
+
 
 const handleCart = (state = getInitialCart(), action) => {
   switch (action.type) {

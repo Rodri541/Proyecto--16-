@@ -2,8 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import { Sidebar, Navbar } from "../components";
 import toast from "react-hot-toast";
 import API_URL from "../config";
+import { useNavigate } from "react-router-dom";
 
-export const AgregarProduct = () => {
+
+export const AddProduct = () => {
     const Name = useRef(null);
     const Price = useRef(null);
     const Cost = useRef(null);
@@ -17,9 +19,11 @@ export const AgregarProduct = () => {
     const Volume = useRef(null);
     const Package = useRef(null);
     const SupplierId = useRef(null);
+    const Color = useRef(null);
 
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,32 +63,51 @@ export const AgregarProduct = () => {
             Description: Description.current?.value,
             Quantity: Quantity.current?.value,
             CategoryId: CategoryId.current?.value,
-            ImageUrl: ImageUrl.current?.value,
             Base: Base.current?.value,
             Height: Height.current?.value,
             Weight: Weight.current?.value,
             Volume: Volume.current?.value,
             Package: Package.current?.value,
             SupplierId: SupplierId.current?.value,
+            Color: Color.current?.value,
         };
 
-        try {
-            const response = await fetch(`${API_URL}/productos`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(productData),
-            });
+        const image = ImageUrl.current?.files[0];
+        if (image) {
+            const formData = new FormData();
+            formData.append("image", image);
+            formData.append("Name", productData.Name);
+            formData.append("Price", productData.Price);
+            formData.append("Cost", productData.Cost);
+            formData.append("Description", productData.Description);
+            formData.append("Quantity", productData.Quantity);
+            formData.append("CategoryId", productData.CategoryId);
+            formData.append("Base", productData.Base);
+            formData.append("Height", productData.Height);
+            formData.append("Weight", productData.Weight);
+            formData.append("Volume", productData.Volume);
+            formData.append("Package", productData.Package);
+            formData.append("SupplierId", productData.SupplierId);
+            formData.append("Color", productData.Color);
 
-            if (!response.ok) {
-                throw new Error("Creación no realizada");
+            try {
+                const response = await fetch(`${API_URL}/productos`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Creación no realizada");
+                }
+
+                toast.success("Producto creado correctamente");
+                navigate("/ListaProducts");
+            } catch (error) {
+                console.error("Error al crear el producto:", error);
+                toast.error("Error al crear el producto");
             }
-
-            toast.success("Producto creado correctamente");
-        } catch (error) {
-            console.error("Error al crear el producto:", error);
-            toast.error("Error al crear el producto");
+        } else {
+            toast.error("No se ha seleccionado una imagen");
         }
     };
 
@@ -100,42 +123,42 @@ export const AgregarProduct = () => {
                             <div className="row">
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="nombre" className="form-label">Nombre del Producto</label>
+                                        <label htmlFor="nombre" className="form-label">Nombre del Producto *</label>
                                         <input type="text" className="form-control" id="nombre" ref={Name} required />
                                     </div>
                                 </div>
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="precio" className="form-label">Precio</label>
+                                        <label htmlFor="precio" className="form-label">Precio *</label>
                                         <input type="number" className="form-control" id="precio" ref={Price} required />
                                     </div>
                                 </div>
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="costo" className="form-label">Costo</label>
+                                        <label htmlFor="costo" className="form-label">Costo *</label>
                                         <input type="number" className="form-control" id="costo" ref={Cost} required />
                                     </div>
                                 </div>
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="descripcion" className="form-label">Descripción</label>
+                                        <label htmlFor="descripcion" className="form-label">Descripción *</label>
                                         <textarea className="form-control" id="descripcion" ref={Description} rows="3" required></textarea>
                                     </div>
                                 </div>
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="cantidad" className="form-label">Cantidad</label>
+                                        <label htmlFor="cantidad" className="form-label">Cantidad *</label>
                                         <input type="number" className="form-control" id="cantidad" ref={Quantity} required />
                                     </div>
                                 </div>
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="categoria" className="form-label">Categoría</label>
+                                        <label htmlFor="categoria" className="form-label">Categoría *</label>
                                         <select className="form-control" id="categoria" ref={CategoryId} required>
                                             <option value="">Seleccione una categoría</option>
                                             {categories.map((category) => (
@@ -149,7 +172,7 @@ export const AgregarProduct = () => {
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="proveedor" className="form-label">Proveedor</label>
+                                        <label htmlFor="proveedor" className="form-label">Proveedor *</label>
                                         <select className="form-control" id="proveedor" ref={SupplierId} required>
                                             <option value="">Seleccione un proveedor</option>
                                             {suppliers.map((supplier) => (
@@ -163,7 +186,14 @@ export const AgregarProduct = () => {
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="imagenURL" className="form-label">Imagen del Producto</label>
+                                        <label htmlFor="color" className="form-label">Color</label>
+                                        <textarea className="form-control" id="color" ref={Color}></textarea>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-md-6">
+                                    <div className="mb-3">
+                                        <label htmlFor="imagenURL" className="form-label">Imagen del Producto *</label>
                                         <input type="file" className="form-control" id="imagenURL" ref={ImageUrl} accept="image/*" required />
                                     </div>
                                 </div>
@@ -217,4 +247,4 @@ export const AgregarProduct = () => {
     );
 };
 
-export default AgregarProduct;
+export default AddProduct;

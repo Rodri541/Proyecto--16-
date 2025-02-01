@@ -6,8 +6,11 @@ const categoriesRoutes = require('./categories.routes.js');
 const suppliersRoutes = require('./suppliers.routes.js');
 const mercadopagoRoutes = require('./mercadopago.routes.js');
 const webhooksRoutes = require('./webhooks.routes.js');
+const orders = require('./orders.routes.js');
 // const { createPreference } = require('./controllers/mercadopago.controller');
 const cors = require('cors');
+require('dotenv').config();
+
 
 const app = express();
 app.use(cors());
@@ -22,7 +25,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(productRoutes, userRoutes, categoriesRoutes, suppliersRoutes, mercadopagoRoutes, webhooksRoutes);
+app.use(productRoutes, userRoutes, categoriesRoutes, suppliersRoutes, mercadopagoRoutes, webhooksRoutes, orders);
 
 app.listen(PORT, () => {
     console.log('Servidor iniciado... Puerto: ', PORT);

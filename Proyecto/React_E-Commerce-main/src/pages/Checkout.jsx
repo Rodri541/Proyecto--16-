@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config";
+import "../css/checkout.css";
 
 const Checkout = () => {
   const state = useSelector((state) => state.handleCart);
@@ -19,6 +20,7 @@ const Checkout = () => {
         title: item.Name,   
         quantity: Number(item.qty),
         unit_price: Number(item.Price),
+        color: item.color,
       }));
 
       const userData = {
@@ -38,6 +40,8 @@ const Checkout = () => {
     } finally {
       setLoading(false);
     }
+    localStorage.removeItem("cart");
+  
   };
 
   const EmptyCart = () => (
@@ -62,7 +66,7 @@ const Checkout = () => {
     });
 
     return (
-      <div className="container py-5">
+      <div className="container py-5" id="contenedor">
         <div className="row my-4">
           <div className="col-md-7 col-lg-8">
             <h4 className="mb-3">Pago</h4>

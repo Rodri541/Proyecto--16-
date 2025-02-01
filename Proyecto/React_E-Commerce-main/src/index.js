@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-
+import Spinner from "./components/Spinner";
 import {
   Home,
   Product,
@@ -20,12 +20,16 @@ import {
   Checkout,
   PageNotFound,
   Dashboard,
-  ListaProducts,
-  AgregarProduct,
-  EditarProduct,
-  ListaProveedores,
-  AgregarProveedor,
-  EditarProveedor,
+  ProductsList,
+  AddProduct,
+  PutProduct,
+  SuppliersList,
+  PutSupplier,
+  Orders,
+  ProductDetails,
+  Statistics,
+  AddSupplier,
+  Users
 } from "./pages";
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -45,17 +49,13 @@ root.render(
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<Products />} />
           <Route path="/productos/:id" element={<Product />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/listaproducts" element={<ListaProducts />} />
-          <Route path="/listaproveedores" element={<ListaProveedores />} />
-          <Route path="/agregarproveedor" element={<AgregarProveedor />} />
+          <Route path="/sobreNosotros" element={<AboutPage />} />
+          <Route path="/contacto" element={<ContactPage />} />
+          <Route path="/carrito" element={<Cart />} />
 
-          <Route path="/editarproveedor/:proveedorId" element={<EditarProveedor />} />
-          <Route path="/editarproduct/:productId" element={<EditarProduct />} />
-         
-          <Route path="/agregarproduct" element={<AgregarProduct />} />
+          <Route path="/spinner" element={<Spinner />} />
+
+          {/* LOGIN */}
           <Route
             path="/login"
             element={
@@ -64,10 +64,13 @@ root.render(
               </PublicRoute>
             }
           />
-          <Route path="/register" element={<Register />} />
+
+          <Route path="/registro" element={<Register />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/productos/*" element={<PageNotFound />} />
+
+          {/* RUTAS PROTEGIDAS SOLO PARA ADMIN */}
           <Route
             path="/dashboard"
             element={
@@ -76,6 +79,71 @@ root.render(
               </ProtectedRoute>
             }
           />
+
+          <Route path="/listaProductos" element={
+            <ProtectedRoute>
+              <ProductsList/>
+            </ProtectedRoute>
+          }
+          />
+
+          <Route path="/listaProveedores" element={
+            <ProtectedRoute>
+              <SuppliersList />
+            </ProtectedRoute>
+          }
+          />
+            
+          <Route path="/agregarProveedor" element={
+            <ProtectedRoute>
+              <AddSupplier />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/ordenes" element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/estadisticas" element={
+            <ProtectedRoute>
+              <Statistics />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/productoDetalleDashboard/:productId" element={
+            <ProtectedRoute>
+              < ProductDetails />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/editarProveedor/:proveedorId" element={
+            <ProtectedRoute>
+              <PutSupplier />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/editarProducto/:productId" element={
+            <ProtectedRoute>
+              <PutProduct />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/agregarProducto" element={
+            <ProtectedRoute>
+              <AddProduct />
+            </ProtectedRoute>
+          } />
+           <Route path="/usuarios" element={
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          } />
+
         </Routes>
       </Provider>
     </ScrollToTop>

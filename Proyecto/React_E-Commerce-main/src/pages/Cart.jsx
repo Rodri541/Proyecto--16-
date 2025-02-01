@@ -29,9 +29,12 @@ const Cart = () => {
   const addItem = (product) => {
     dispatch(addCart(product));
   };
+
   const removeItem = (product) => {
     dispatch(delCart(product));
   };
+
+  let isOverStock = false;
 
   const ShowCart = () => {
     let subtotal = 0;
@@ -41,6 +44,10 @@ const Cart = () => {
     state.forEach((item) => {
       subtotal += item.Price * item.qty;
       totalItems += item.qty;
+
+      if (item.qty > item.Quantity) {
+        isOverStock = true;
+      }
     });
 
     return (
@@ -55,7 +62,7 @@ const Cart = () => {
                   </div>
                   <div className="card-body">
                     {state.map((item, index) => (
-                      <div key={`${item.ProductId}-${item.color}-${index}`}>
+                      <div key={`${item.ProductId}-${index}`}>
                         <div className="row d-flex align-items-center">
                           <div className="col-lg-3 col-md-12">
                             <img
@@ -69,7 +76,7 @@ const Cart = () => {
                             <p>
                               <strong>{item.Name}</strong>
                             </p>
-                            <p>Color: {item.color}</p>
+                            <p>Color: {item.Color || "No especificado"}</p>
                           </div>
                           <div className="col-lg-4 col-md-6">
                             <div className="d-flex align-items-center justify-content-center">
@@ -119,10 +126,20 @@ const Cart = () => {
                     </ul>
                     <Link
                       to="/checkout"
-                      className="btn btn-dark btn-lg btn-block"
+                      className={`btn btn-lg btn-block ${
+                        isOverStock ? "btn-secondary disabled" : "btn-dark"
+                      }`}
+                      onClick={(e) => {
+                        if (isOverStock) e.preventDefault();
+                      }}
                     >
                       Ir a pagar
                     </Link>
+                    {isOverStock && (
+                      <p className="text-danger mt-2">
+                        La cantidad seleccionada excede el stock disponible.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

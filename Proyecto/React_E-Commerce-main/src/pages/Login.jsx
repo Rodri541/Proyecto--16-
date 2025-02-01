@@ -6,6 +6,8 @@ import API_URL from "../config";
 import "../css/login.css";
 
 const Login = () => {
+
+  
   const Password = useRef(null);
   const Email = useRef(null);
   const navigate = useNavigate();
@@ -13,49 +15,50 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const emailValue = Email.current?.value;
-    const passwordValue = Password.current?.value;
+  const emailValue = Email.current?.value;
+  const passwordValue = Password.current?.value;
 
-    if (!emailValue || !passwordValue) {
-      toast.error("Todos los campos son obligatorios");
-      return;
-    }
+  if (!emailValue || !passwordValue) {
+    toast.error("Todos los campos son obligatorios");
+    return;
+  }
 
-    fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        Email: emailValue,
-        Password: passwordValue,
-      }),
+  fetch(`${API_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      Email: emailValue,
+      Password: passwordValue,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // Si no es 200 OK, lanza un error
+        throw new Error("Error en la autenticación");
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          // Si no es 200 OK, lanza un error
-          throw new Error("Error en la autenticación");
-        }
-        return response.json();
-      })
-      .then((json) => {
-       // console.log(json);
-        if (json.codigo === 200) {
-          console.log(json);
-          localStorage.setItem("id", json.apiKey);
-          localStorage.setItem("email", json.email);
-          localStorage.setItem("userName", json.userName);
+    .then((json) => {
+      if (json.codigo === 200) {
+        // Almacenar los valores correctos del json en localStorage
+        localStorage.setItem("id", json.userId);  // Usar json.userId
+        localStorage.setItem("token", json.apiKey);  // Guardamos el token JWT
+        localStorage.setItem("email", json.email);
+        localStorage.setItem("roleId", json.roleId); 
+        localStorage.setItem("userName", json.userName);
 
-          toast.success("Login realizado");
-          navigate("/"); 
-        } else {
-          toast.error("Login no realizado");
-        }
-      })
-      .catch((error) => {
-        console.error("Error en la solicitud:", error);
-        toast.error("Hubo un problema con el inicio de sesión. Intenta nuevamente.");
-      });
+        toast.success("Login realizado");
+        navigate("/"); // Redirigir al home o página deseada
+      } else {
+        toast.error("Login no realizado");
+      }
+    })
+    .catch((error) => {
+      console.error("Error en la solicitud:", error);
+      toast.error("Hubo un problema con el inicio de sesión. Intenta nuevamente.");
+    });
   };
 
   return (
@@ -94,7 +97,6 @@ const Login = () => {
                 <button className="my-2 mx-auto btn btn-dark" type="submit">
                   Login
                 </button>
-
               </div>
             </form>
           </div>
@@ -104,5 +106,6 @@ const Login = () => {
     </div>
   );
 };
+
 
 export default Login;

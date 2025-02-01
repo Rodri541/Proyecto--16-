@@ -4,7 +4,7 @@ import { Navbar, Sidebar } from "../components";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
-const EditarProveedor = () => {
+const PutSupplier = () => {
     const { proveedorId } = useParams();
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const EditarProveedor = () => {
             }
         };
 
-        //Para cargar proveedor seleccionado
+        
         const fetchProveedor = async () => {
             try {
                 const response = await fetch(`${API_URL}/proveedores/${proveedorId}`);
@@ -143,8 +143,7 @@ const EditarProveedor = () => {
                                             value={proveedor.ProductId || ""}
                                             onChange={(e) => {
                                                 setProveedor(prevState => ({ ...prevState, ProductId: e.target.value }));
-                                            }}
-                                        >
+                                            }}>
                                             <option value="">Seleccione un producto</option>
                                             {products.map((product) => (
                                                 <option key={product.ProductId} value={product.ProductId}>
@@ -152,19 +151,6 @@ const EditarProveedor = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div className="col-12 col-md-6">
-                                    <div className="mb-3">
-                                        <label htmlFor="costo" className="form-label">Costo</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="costo"
-                                            ref={Cost}
-                                            defaultValue={proveedor.Cost}
-                                        />
                                     </div>
                                 </div>
 
@@ -194,4 +180,4 @@ const EditarProveedor = () => {
     );
 }
 
-export default EditarProveedor;
+export default PutSupplier;

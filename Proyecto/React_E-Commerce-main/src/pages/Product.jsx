@@ -13,44 +13,52 @@ import { Footer, Navbar } from "../components";
 
 const Product = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState([]);
-  const [category, setCategory] = useState([]);
+  const dispatch = useDispatch();
+
+  const [product, setProduct] = useState({});
+  const [category, setCategory] = useState({});
   const [similarProducts, setSimilarProducts] = useState([]);
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [groupedProducts, setGroupedProducts] = useState({});
+  const [selectedSize, setSelectedSize] = useState("");
   const [colors, setColors] = useState([]);
   const [selectedColor, setSelectedColor] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
-
-  const dispatch = useDispatch();
+  const [loadingSimilar, setLoadingSimilar] = useState(false);
 
   const addProduct = (product, color) => {
     const productWithColor = { ...product, color };
     dispatch(addCart(productWithColor));
+    toast.success("Añadido al carrito");
   };
 
   useEffect(() => {
-    const getProduct = async () => {
+    const fetchProductData = async () => {
       setLoading(true);
-      setLoading2(true);
+      setLoadingSimilar(true);
 
       try {
-        const response = await axios.get(`${API_URL}/productos/${id}`);
-        
-        setProduct(response.data);
+        const productRes = await axios.get(`${API_URL}/productos/${id}`);
+        const productData = productRes.data;
+        setProduct(productData);
 
-        const responseCat = await axios.get(
-          `${API_URL}/categorias/${response.data.CategoryId}`
+        const categoryRes = await axios.get(
+          `${API_URL}/categorias/${productData.CategoryId}`
         );
-        setCategory(responseCat.data);
+        setCategory(categoryRes.data);
 
-        const relatedResponse = await axios.get(
-          `${API_URL}/productos/nombre/${response.data.Name}`
+        const relatedRes = await axios.get(
+          `${API_URL}/productos/nombre/${productData.Name}`
         );
-        setRelatedProducts(relatedResponse.data);
+        const groupedBySize = relatedRes.data.reduce((acc, item) => {
+          const sizeKey = `${item.Base}x${item.Height}`;
+          if (!acc[sizeKey]) acc[sizeKey] = [];
+          acc[sizeKey].push(item);
+          return acc;
+        }, {});
+        setGroupedProducts(groupedBySize);
 
         const response2 = await axios.get(
-          `${API_URL}/productos/categorias/${response.data.CategoryId}`
+          `${API_URL}/productos/categorias/${productData.CategoryId}`
         );
         const uniqueProducts = response2.data.reduce((acc, product) => {
           if (!acc.some((item) => item.Name === product.Name)) {
@@ -60,30 +68,30 @@ const Product = () => {
         }, []);
         setSimilarProducts(uniqueProducts);
 
-        const colorsResponse = await axios.get(
-          `${API_URL}/productos/${id}/colores`
-        );
-        setColors(colorsResponse.data);
-        if (colorsResponse.data.length > 0) {
-          setSelectedColor(colorsResponse.data[0].Name);
-        }
-      } catch (error) {
-        console.error("Error encontrando información del producto", error);
+        const initialSize = Object.keys(groupedBySize)[0];
+        setSelectedSize(initialSize);
+        setColors(groupedBySize[initialSize]);
+        setSelectedColor(groupedBySize[initialSize][0]?.Color || "");
+      } catch (err) {
+        console.error("Error fetching product data", err);
       } finally {
         setLoading(false);
-        setLoading2(false);
+        setLoadingSimilar(false);
       }
     };
 
-    getProduct();
+    fetchProductData();
   }, [id]);
 
-  const handleColorChange = (e) => {
-    setSelectedColor(e.target.value);
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+    const productsForSize = groupedProducts[size];
+    setColors(productsForSize);
+    setSelectedColor(productsForSize[0].Color);
   };
 
-  const handleSelectChange = (e) => {
-    window.location.href = `/productos/${e.target.value}`;
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
   };
 
   const Loading = () => (
@@ -93,114 +101,105 @@ const Product = () => {
     </div>
   );
 
-  const ShowProduct = () => (
-    <div className="container my-5 py-4">
-      <div className="row align-items-center">
-        <div className="col-lg-6 text-center">
-          <img
-            className="img-fluid rounded shadow-sm"
-            src={product.ImageUrl}
-            alt={product.Name}
-          />
-        </div>
-        <div className="col-lg-6">
-          <h4 className="text-muted mb-2">{category.Name}</h4>
-          <h1 className="display-6 fw-bold mb-3">{product.Name}</h1>
-          <p className="text-warning fs-5 mb-1">
-            {product.Rate} <i className="fa fa-star"></i>
-          </p>
-          <h2 className="text-success fw-bold mb-4">${product.Price}</h2>
-          <p className="text-secondary">{product.Description}</p>
+  const ProductDetail = () => {
+    const selectedProduct =
+      groupedProducts[selectedSize]?.find(
+        (item) => item.Color === selectedColor
+      ) || product;
 
-          {relatedProducts.length > 1 && (
-            <div className="mb-3">
-              <label htmlFor="sizeSelect" className="form-label">
-                Medidas disponibles:
-              </label>
-              <select
-                id="sizeSelect"
-                value={id}
-                onChange={handleSelectChange}
-                className="form-select"
-              >
-                {relatedProducts.map((item) => (
-                  <option key={item.ProductId} value={item.ProductId}>
-                    {item.Base} x {item.Height} cm - ${item.Price}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+    return (
+      <div className="container my-5 py-4">
+        <div className="row align-items-center">
+          <div className="col-lg-6 text-center">
+            <img
+              className="img-fluid rounded shadow-sm"
+              src={selectedProduct.ImageUrl}
+              alt={selectedProduct.Name}/>
+          </div>
+          <div className="col-lg-6">
+            <h4 className="text-muted mb-2">{category.Name}</h4>
+            <h1 className="display-6 fw-bold mb-3">{selectedProduct.Name}</h1>
+            <h2 className="text-success fw-bold mb-4">
+              ${selectedProduct.Price}
+            </h2>
+            <p className="text-secondary">{selectedProduct.Description}</p>
 
-          {colors.length > 0 && (
-            <div className="mb-4">
-              <label htmlFor="colorSelect" className="form-label">
-                Colores disponibles:
-              </label>
-              <select
-                id="colorSelect"
-                value={selectedColor}
-                onChange={handleColorChange}
-                className="form-select"
-              >
-                {colors.map((color) => (
-                  <option key={color.ColorId} value={color.Name}>
-                    {color.Name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+            {Object.keys(groupedProducts).length > 1 && (
+              <div className="mb-3">
+                <label htmlFor="sizeSelect" className="form-label">
+                  Medidas disponibles:
+                </label>
+                <select
+                  id="sizeSelect"
+                  value={selectedSize}
+                  onChange={(e) => handleSizeChange(e.target.value)}
+                  className="form-select">
+                  {Object.keys(groupedProducts).map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
-          <button
-            className="btn btn-primary me-3"
-            onClick={() => {
-              toast.success("Añadido al carrito");
-              addProduct(product, selectedColor);
-            }}
-          >
-            Agregar al carrito
-          </button>
-          <Link to="/cart" className="btn btn-outline-secondary">
-            Ir al carrito
-          </Link>
+            {product.Color != null && (
+              <div className="mb-4">
+                <label htmlFor="colorSelect" className="form-label">
+                  Colores disponibles:
+                </label>
+                <select
+                  id="colorSelect"
+                  value={selectedColor}
+                  onChange={(e) => handleColorChange(e.target.value)}
+                  className="form-select"
+                >
+                  {colors.map((color) => (
+                    <option key={color.ColorId} value={color.Color}>
+                      {color.Color}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <button
+              className="btn btn-primary me-3"
+              onClick={() => addProduct(selectedProduct, selectedColor)}>
+              Agregar al carrito
+            </button>
+            <Link to="/carrito" className="btn btn-outline-secondary">
+              Ir al carrito
+            </Link>
+            <p className="text-secondary mt-3">
+              Stock restante: {selectedProduct.Quantity}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  );
-
-  const Loading2 = () => (
-    <div className="my-4 py-4 text-center">
-      {[...Array(4)].map((_, i) => (
-        <Skeleton key={i} height={200} width={150} className="mx-2" />
-      ))}
-    </div>
-  );
+    );
+  };
 
   const ShowSimilarProduct = () => (
-    <div className="py-4">
-      <div className="d-flex flex-wrap justify-content-center">
-        {similarProducts.map((item) => (
-          <div key={item.ProductId} className="card mx-2 mb-3 shadow-sm">
-            <img
-              className="card-img-top p-3"
-              src={item.ImageUrl}
-              alt={item.Name}
-              height={150}
-              style={{ objectFit: "contain" }}
-            />
-            <div className="card-body text-center">
-              <h5 className="card-title text-truncate">{item.Name}</h5>
-              <Link
-                to={`/productos/${item.ProductId}`}
-                className="btn btn-sm btn-primary mt-2"
-              >
-                Ver detalle
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="d-flex">
+      {similarProducts.map((item) => (
+        <div key={item.ProductId} className="mx-2 text-center">
+          <img
+            src={item.ImageUrl}
+            alt={item.Name}
+            height={150}
+            className="rounded"
+            style={{ objectFit: "contain" }}
+          />
+          <h6 className="mt-2">{item.Name}</h6>
+          <Link
+            to={`/productos/${item.ProductId}`}
+            className="btn btn-sm btn-primary mt-2"
+          >
+            Ver detalle
+          </Link>
+        </div>
+      ))}
     </div>
   );
 
@@ -208,12 +207,12 @@ const Product = () => {
     <div className="productDetail">
       <Navbar />
       <div className="container">
-        <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
+        <div className="row">{loading ? <Loading /> : <ProductDetail />}</div>
         <div className="row my-5">
           <h3 className="text-center mb-4">También te podría interesar</h3>
           <div className="d-none d-md-block">
-            <Marquee pauseOnHover={true} speed={50} className="shadow-sm">
-              {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
+            <Marquee pauseOnHover speed={50} className="shadow-sm">
+              {loadingSimilar ? <Loading /> : <ShowSimilarProduct />}
             </Marquee>
           </div>
         </div>

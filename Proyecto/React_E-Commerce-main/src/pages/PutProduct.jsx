@@ -4,7 +4,7 @@ import { Navbar, Sidebar } from "../components";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
-const EditarProduct = () => {
+const PutProduct = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ const EditarProduct = () => {
 
             if (response.status === 200) {
                 toast.success("Producto editado");
-                navigate("/ListaProductos");
+                navigate("/ListaProducts");
             } else {
                 toast.error("No se editó correctamente");
             }
@@ -332,4 +332,4 @@ const EditarProduct = () => {
     );
 };
 
-export default EditarProduct;
+export default PutProduct;
