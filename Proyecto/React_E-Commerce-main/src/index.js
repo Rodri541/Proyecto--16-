@@ -82,7 +82,7 @@ root.render(
 
           <Route path="/listaProductos" element={
             <ProtectedRoute>
-              <ProductsList />
+              <ProductsList/>
             </ProtectedRoute>
           }
           />
@@ -93,7 +93,7 @@ root.render(
             </ProtectedRoute>
           }
           />
-
+            
           <Route path="/agregarProveedor" element={
             <ProtectedRoute>
               <AddSupplier />
@@ -138,7 +138,7 @@ root.render(
               <AddProduct />
             </ProtectedRoute>
           } />
-          <Route path="/usuarios" element={
+           <Route path="/usuarios" element={
             <ProtectedRoute>
               <Users />
             </ProtectedRoute>

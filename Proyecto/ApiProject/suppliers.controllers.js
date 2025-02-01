@@ -51,7 +51,7 @@ module.exports = {
         );
 
       const supplierId = result.recordset[0].SupplierId;
-
+      
       res.json({
         SupplierId: supplierId,
         Name: req.body.Name,

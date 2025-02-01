@@ -126,8 +126,9 @@ const Cart = () => {
                     </ul>
                     <Link
                       to="/checkout"
-                      className={`btn btn-lg btn-block ${isOverStock ? "btn-secondary disabled" : "btn-dark"
-                        }`}
+                      className={`btn btn-lg btn-block ${
+                        isOverStock ? "btn-secondary disabled" : "btn-dark"
+                      }`}
                       onClick={(e) => {
                         if (isOverStock) e.preventDefault();
                       }}

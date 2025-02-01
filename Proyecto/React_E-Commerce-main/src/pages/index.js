@@ -19,4 +19,3 @@ export { default as Orders } from './Orders';
 export { default as ProductDetails} from './ProductDetailDash';
 export { default as Statistics} from './Statistics';
 export { default as Users } from './Users';
-
