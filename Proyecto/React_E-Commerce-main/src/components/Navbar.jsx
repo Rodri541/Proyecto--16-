@@ -42,11 +42,8 @@ const Navbar = () => {
   
 
     setIsAuthenticated(false);
-    setRoleId(null); 
-    navigate('/');
+    navigate('/login');
     window.location.reload();
-
-    
   };
  
 
@@ -82,9 +79,9 @@ const Navbar = () => {
           <div className="buttons text-center">
             {isAuthenticated ? (
               <>
-                {roleId === "1" && (
-                  <NavLink to="/dashboard" className="btn btn-outline-dark m-2">
-                    <i className="fa fa-sign-in-alt mr-1"></i> Dashboard
+                {isAdminLoggedIn() ? (
+                  <NavLink to="/Dashboard" className="btn btn-outline-dark m-2">
+                    <i className="fa fa-sign-in-alt mr-1"></i> DashBoard
                   </NavLink>
                 )}
                 <button className="btn btn-outline-dark m-2" onClick={handleLogout}>
