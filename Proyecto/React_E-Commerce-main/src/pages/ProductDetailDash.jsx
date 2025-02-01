@@ -77,14 +77,8 @@ export const ProductDetails = () => {
                 </div>
                 <button
                     className="btn btn-primary mt-4"
-<<<<<<< HEAD
                     onClick={() => window.history.back()}>
                     Volver
-=======
-                    onClick={() => window.history.back()}
-                >
-                    Go Back
->>>>>>> 750a6b834aff33e60be8577a970be584c48f02b3
                 </button>
             </div>
         </div>

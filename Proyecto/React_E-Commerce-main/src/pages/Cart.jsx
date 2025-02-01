@@ -69,7 +69,8 @@ const Cart = () => {
                               src={item.ImageUrl}
                               alt={item.Name}
                               width={100}
-                              height={75}/>
+                              height={75}
+                            />
                           </div>
                           <div className="col-lg-5 col-md-6">
                             <p>
@@ -81,13 +82,15 @@ const Cart = () => {
                             <div className="d-flex align-items-center justify-content-center">
                               <button
                                 className="btn px-3"
-                                onClick={() => removeItem(item)}>
+                                onClick={() => removeItem(item)}
+                              >
                                 <i className="fas fa-minus"></i>
                               </button>
                               <p className="mx-3 mb-0">{item.qty}</p>
                               <button
                                 className="btn px-3"
-                                onClick={() => addItem(item)}>
+                                onClick={() => addItem(item)}
+                              >
                                 <i className="fas fa-plus"></i>
                               </button>
                             </div>
@@ -123,12 +126,12 @@ const Cart = () => {
                     </ul>
                     <Link
                       to="/checkout"
-                      className={`btn btn-lg btn-block ${
-                        isOverStock ? "btn-secondary disabled" : "btn-dark"
-                      }`}
+                      className={`btn btn-lg btn-block ${isOverStock ? "btn-secondary disabled" : "btn-dark"
+                        }`}
                       onClick={(e) => {
                         if (isOverStock) e.preventDefault();
-                      }}>
+                      }}
+                    >
                       Ir a pagar
                     </Link>
                     {isOverStock && (

@@ -114,7 +114,7 @@ const Product = () => {
             <img
               className="img-fluid rounded shadow-sm"
               src={selectedProduct.ImageUrl}
-              alt={selectedProduct.Name}/>
+              alt={selectedProduct.Name} />
           </div>
           <div className="col-lg-6">
             <h4 className="text-muted mb-2">{category.Name}</h4>

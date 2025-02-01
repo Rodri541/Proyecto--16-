@@ -58,11 +58,6 @@ CREATE TABLE Roles (
     RoleName NVARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Roles (
-    RoleId INT PRIMARY KEY IDENTITY(1,1),
-    RoleName NVARCHAR(50) NOT NULL
-);
-
 -- Crear la tabla Users con los campos adicionales
 CREATE TABLE Users (
     UserId INT PRIMARY KEY IDENTITY(1,1),

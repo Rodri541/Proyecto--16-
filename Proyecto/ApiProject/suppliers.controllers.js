@@ -22,6 +22,7 @@ module.exports = {
         .input("id", sql.Int, req.params.id)
         .query("SELECT * FROM Suppliers where SupplierId = @id");
 
+      console.log(result);
 
       if (result.rowsAffected[0] == 0) {
         return res.status(404).json({ message: "Supplier not found" });
@@ -50,7 +51,7 @@ module.exports = {
         );
 
       const supplierId = result.recordset[0].SupplierId;
-      
+
       res.json({
         SupplierId: supplierId,
         Name: req.body.Name,

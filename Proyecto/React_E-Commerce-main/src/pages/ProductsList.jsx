@@ -113,12 +113,12 @@ export const ProductsList = () => {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Altura (cm)</th>
-                                    <th style={{ width: "10%"}}>Color</th>
+                                    <th style={{ width: "10%" }}>Color</th>
                                     <th>Categoría</th>
                                     <th>Proveedor</th>
                                     <th>Precio</th>
                                     <th>Stock</th>
-                                    
+
                                     <th>¿A la venta?</th>
                                     <th>Detalles</th>
                                     <th>Modificar</th>
@@ -135,7 +135,7 @@ export const ProductsList = () => {
                                         <td>{item.supplierName}</td>
                                         <td>{`$${item.Price}`}</td>
                                         <td>{item.Quantity}</td>
-                                       
+
                                         <td>
                                             {item.ALaVenta ? (
                                                 <i className="fa-solid fa-check text-success"></i>
@@ -147,7 +147,7 @@ export const ProductsList = () => {
                                             <button
                                                 className="btn btn-sm btn-outline-info"
                                                 onClick={() => navigate(`/productoDetalleDashboard/${item.ProductId}`)}>
-                                            
+
                                                 Ver detalles
                                             </button>
                                         </td>
@@ -173,7 +173,7 @@ export const ProductsList = () => {
                         </table>
                     </div>
                 </div>
-    
+
                 <ReactPaginate
                     previousLabel={<i className="fa-solid fa-chevron-left" style={{ fontSize: "12px", color: "#555" }}></i>}
                     nextLabel={<i className="fa-solid fa-chevron-right" style={{ fontSize: "12px", color: "#555" }}></i>}

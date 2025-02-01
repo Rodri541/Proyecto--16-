@@ -16,19 +16,23 @@ const createPreference = async (req, res) => {
 
     const userId = result.recordset[0].UserId;
 
-  const preference = {
-    items: items.map((item) => ({
-      id: item.ProductId,
-      title: item.title,
-      quantity: Number(item.quantity),
-      unit_price: item.unit_price,
-      currency_id: "UYU",
-    })),
-    back_urls: {
-    },
-    auto_return: "approved", 
-    binary_mode: true, 
-  };
+    const preference = {
+      items: items.map((item) => ({
+        id: item.ProductId,
+        title: item.title,
+        quantity: Number(item.quantity),
+        unit_price: item.unit_price,
+        currency_id: "UYU",
+      })),
+      back_urls: {
+        success: "http://localhost:3001/",
+        failure: "http://localhost:3001/",
+        pending: "http://localhost:3001/",
+      },
+      auto_return: "approved",
+      binary_mode: true,
+      external_reference: userId,
+    };
 
     const { default: fetch } = await import("node-fetch");
     const response = await fetch("https://api.mercadopago.com/checkout/preferences", {

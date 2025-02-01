@@ -39,7 +39,7 @@ const postUser = async (req, res) => {
     const result = await pool
       .request()
       .input("userName", sql.NVarChar(50), req.body.UserName)
-      .input("password", sql.NVarChar(255), req.body.Password) 
+      .input("password", sql.NVarChar(255), req.body.Password)
       .input("email", sql.NVarChar(100), req.body.Email)
       .input("birthdate", sql.Date, req.body.Birthdate)
       .input("address", sql.NVarChar(255), req.body.Address)
@@ -157,6 +157,7 @@ const jwt = require("jsonwebtoken");
 const loginUser = async (req, res) => {
   const { Email, Password } = req.body;
 
+
   try {
     const pool = await getConnection();
     const result = await pool
@@ -206,7 +207,6 @@ const loginUser = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   getUsers,
