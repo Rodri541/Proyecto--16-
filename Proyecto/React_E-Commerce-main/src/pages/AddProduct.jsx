@@ -101,7 +101,7 @@ export const AddProduct = () => {
                 }
 
                 toast.success("Producto creado correctamente");
-                navigate("/ListaProducts");
+                navigate("/listaProductos");
             } catch (error) {
                 console.error("Error al crear el producto:", error);
                 toast.error("Error al crear el producto");
