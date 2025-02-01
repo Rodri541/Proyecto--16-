@@ -25,9 +25,9 @@ const createPreference = async (req, res) => {
         currency_id: "UYU",
       })),
       back_urls: {
-        success: "http://localhost:3001/",
-        failure: "http://localhost:3001/",
-        pending: "http://localhost:3001/",
+        success: "https://jolly-flower-088dd821e.4.azurestaticapps.net/",
+        failure: "https://jolly-flower-088dd821e.4.azurestaticapps.net/",
+        pending: "https://jolly-flower-088dd821e.4.azurestaticapps.net/",
       },
       auto_return: "approved",
       binary_mode: true,
