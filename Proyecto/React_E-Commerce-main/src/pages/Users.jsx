@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import Spinner from '../components/Spinner.jsx';
 
 export const Users = () => {
-    //const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredUsuarios, setFilteredUsuarios] = useState([]);
