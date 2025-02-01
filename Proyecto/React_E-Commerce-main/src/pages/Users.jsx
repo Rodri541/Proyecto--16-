@@ -6,7 +6,7 @@ import { Sidebar, Navbar } from "../components/index.js";
 import API_URL from "../config.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import Spinner from '../components/Spinner.jsx';
 
 export const Users = () => {

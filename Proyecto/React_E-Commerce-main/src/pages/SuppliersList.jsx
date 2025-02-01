@@ -69,8 +69,8 @@ export const SuppliersList = () => {
         setSearchTerm(event.target.value);
     };
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    //const indexOfLastItem = currentPage * itemsPerPage;
+    //const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     //const currentProveedores = filteredProveedores.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
