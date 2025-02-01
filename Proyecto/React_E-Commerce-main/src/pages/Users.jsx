@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from '../components/Spinner.jsx';
 
 export const Users = () => {
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredUsuarios, setFilteredUsuarios] = useState([]);

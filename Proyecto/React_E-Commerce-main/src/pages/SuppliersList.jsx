@@ -71,7 +71,7 @@ export const SuppliersList = () => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentProveedores = filteredProveedores.slice(indexOfFirstItem, indexOfLastItem);
+    //const currentProveedores = filteredProveedores.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
