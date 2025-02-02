@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Spinner from '../components/Spinner.jsx';
 
 export const ProductDetails = () => {
-    const { productId } = useParams(); // Obtén el productId desde la URL
+    const { productId } = useParams(); 
     const [product, setProduct] = useState(null);
     const [category, setCategory] = useState([]);
     const [supplier, setSupplier] = useState([]);

@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Navbar, Sidebar } from "../components";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import Spinner from '../components/Spinner.jsx';
 
 const PutProduct = () => {
     const { productId } = useParams();
