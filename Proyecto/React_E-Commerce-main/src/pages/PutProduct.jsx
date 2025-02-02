@@ -159,11 +159,11 @@ const PutProduct = () => {
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="costo" className="form-label">Costo</label>
+                                        <label htmlFor="cost" className="form-label">Costo</label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             className="form-control"
-                                            id="costo"
+                                            id="cost"
                                             ref={Cost}
                                             defaultValue={product.Cost}
                                             required
@@ -240,6 +240,7 @@ const PutProduct = () => {
                                             id="color"
                                             ref={Color}
                                             defaultValue={product.Color}
+                                            required
                                         />
                                     </div>
                                 </div>
