@@ -22,6 +22,7 @@ const PutProduct = () => {
     const Package = useRef(null);
     const ALaVenta = useRef(null);
     const SupplierId = useRef(null);
+    const Color = useRef(null);
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [product, setProduct] = useState(null);
@@ -87,6 +88,7 @@ const PutProduct = () => {
             Package: Package.current?.value,
             ALaVenta: ALaVenta.current?.checked,
             SupplierId: SupplierId.current?.value,
+            Color: Color.current?.value,
         };
 
         try {
@@ -159,6 +161,20 @@ const PutProduct = () => {
                                             id="costo"
                                             ref={Cost}
                                             defaultValue={product.Cost}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-md-6">
+                                    <div className="mb-3">
+                                        <label htmlFor="color" className="form-label">Color</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="color"
+                                            ref={Color}
+                                            defaultValue={product.Color}
                                             required
                                         />
                                     </div>
