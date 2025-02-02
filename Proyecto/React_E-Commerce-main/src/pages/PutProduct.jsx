@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { Navbar, Sidebar } from "../components";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import Spinner from '../components/Spinner.jsx';
 
 const PutProduct = () => {
     const { productId } = useParams();
@@ -27,7 +26,6 @@ const PutProduct = () => {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -74,7 +72,7 @@ const PutProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+
         const productData = {
             Name: Name.current?.value,
             Price: Price.current?.value,
@@ -114,10 +112,7 @@ const PutProduct = () => {
         }
     };
 
-    if (loading) {
-        return <Spinner />;
-    }
-
+    if (!product) return <div>Cargando...</div>;
 
     return (
         <div>
