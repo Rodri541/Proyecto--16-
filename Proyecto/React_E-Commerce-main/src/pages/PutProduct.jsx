@@ -137,7 +137,7 @@ const PutProduct = () => {
                                             className="form-control"
                                             id="nombre"
                                             ref={Name}
-                                            defaultValue={product.Name}
+                                            //defaultValue={product.Name}
                                             required
                                         />
                                     </div>
