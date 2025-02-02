@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { Navbar, Sidebar } from "../components";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import Spinner from '../components/Spinner.jsx';
 
 const PutProduct = () => {
     const { productId } = useParams();
@@ -23,15 +22,12 @@ const PutProduct = () => {
     const Package = useRef(null);
     const ALaVenta = useRef(null);
     const SupplierId = useRef(null);
-    const Color = useRef(null);
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
-        setLoading(true);
         const fetchCategories = async () => {
             try {
                 const response = await fetch(`${API_URL}/categorias`);
@@ -91,7 +87,6 @@ const PutProduct = () => {
             Package: Package.current?.value,
             ALaVenta: ALaVenta.current?.checked,
             SupplierId: SupplierId.current?.value,
-            Color: Color.current?.value,
         };
 
         try {
@@ -115,9 +110,7 @@ const PutProduct = () => {
         }
     };
 
-    if (loading) {
-        return <Spinner />;
-    }
+    if (!product) return <div>Cargando...</div>;
 
     return (
         <div>
@@ -159,11 +152,11 @@ const PutProduct = () => {
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="cost" className="form-label">Costo</label>
+                                        <label htmlFor="costo" className="form-label">Costo</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="form-control"
-                                            id="cost"
+                                            id="costo"
                                             ref={Cost}
                                             defaultValue={product.Cost}
                                             required
@@ -207,7 +200,8 @@ const PutProduct = () => {
                                             id="categoria"
                                             ref={CategoryId}
                                             defaultValue={product.CategoryId}
-                                            required>
+                                            required
+                                        >
                                             <option value="">Seleccione una categoría</option>
                                             {categories.map((category) => (
                                                 <option key={category.CategoryId} value={category.CategoryId}>
@@ -227,20 +221,6 @@ const PutProduct = () => {
                                             id="imagenURL"
                                             ref={ImageUrl}
                                             accept="image/*"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="col-12 col-md-6">
-                                    <div className="mb-3">
-                                        <label htmlFor="color" className="form-label">Color</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="color"
-                                            ref={Color}
-                                            defaultValue={product.Color}
-                                            required
                                         />
                                     </div>
                                 </div>
