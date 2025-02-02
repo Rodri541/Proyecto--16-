@@ -215,8 +215,7 @@ const PutProduct = () => {
                                             id="categoria"
                                             ref={CategoryId}
                                             defaultValue={product.CategoryId}
-                                            required
-                                        >
+                                            required>
                                             <option value="">Seleccione una categoría</option>
                                             {categories.map((category) => (
                                                 <option key={category.CategoryId} value={category.CategoryId}>

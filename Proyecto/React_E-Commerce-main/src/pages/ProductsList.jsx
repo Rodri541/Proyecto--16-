@@ -13,16 +13,16 @@ import Spinner from '../components/Spinner.jsx';
 
 export const ProductsList = () => {
     const navigate = useNavigate();
-    const [product, setProducts] = useState([]); // Todos los productos
-    const [filter, setFilter] = useState([]); // Productos filtrados
+    const [product, setProducts] = useState([]);
+    const [filter, setFilter] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
-    const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const itemsPerPage = 10; // Número de elementos por página
+    const itemsPerPage = 10;
     const offset = currentPage * itemsPerPage;
-    const currentItems = filter.slice(offset, offset + itemsPerPage); // Usa filter para los elementos actuales
-    const pageCount = Math.ceil(filter.length / itemsPerPage); // Calcula las páginas en base a filter
+    const currentItems = filter.slice(offset, offset + itemsPerPage);
+    const pageCount = Math.ceil(filter.length / itemsPerPage);
 
     useEffect(() => {
         const getProduct = async () => {
@@ -113,12 +113,11 @@ export const ProductsList = () => {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Altura (cm)</th>
-                                    <th style={{ width: "10%"}}>Color</th>
+                                    <th style={{ width: "10%" }}>Color</th>
                                     <th>Categoría</th>
                                     <th>Proveedor</th>
                                     <th>Precio</th>
                                     <th>Stock</th>
-                                    
                                     <th>¿A la venta?</th>
                                     <th>Detalles</th>
                                     <th>Modificar</th>
@@ -135,7 +134,7 @@ export const ProductsList = () => {
                                         <td>{item.supplierName}</td>
                                         <td>{`$${item.Price}`}</td>
                                         <td>{item.Quantity}</td>
-                                       
+
                                         <td>
                                             {item.ALaVenta ? (
                                                 <i className="fa-solid fa-check text-success"></i>
@@ -147,23 +146,20 @@ export const ProductsList = () => {
                                             <button
                                                 className="btn btn-sm btn-outline-info"
                                                 onClick={() => navigate(`/productoDetalleDashboard/${item.ProductId}`)}>
-                                            
                                                 Ver detalles
                                             </button>
                                         </td>
                                         <td>
                                             <button
                                                 className="btn btn-sm btn-outline-primary"
-                                                onClick={() => navigate(`/editarProducto/${item.ProductId}`)}
-                                            >
+                                                onClick={() => navigate(`/editarProducto/${item.ProductId}`)}>
                                                 <i className="fa-solid fa-pen"></i>
                                             </button>
                                         </td>
                                         <td>
                                             <button
                                                 className="btn btn-sm btn-outline-danger"
-                                                onClick={() => DeleteProduct(item.ProductId, setFilter)}
-                                            >
+                                                onClick={() => DeleteProduct(item.ProductId, setProducts, setFilter)}>
                                                 <i className="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
@@ -173,7 +169,7 @@ export const ProductsList = () => {
                         </table>
                     </div>
                 </div>
-    
+
                 <ReactPaginate
                     previousLabel={<i className="fa-solid fa-chevron-left" style={{ fontSize: "12px", color: "#555" }}></i>}
                     nextLabel={<i className="fa-solid fa-chevron-right" style={{ fontSize: "12px", color: "#555" }}></i>}
