@@ -16,6 +16,7 @@ const PutSupplier = () => {
     const LastPurchaseDate = useRef(null);
     const [products, setProducts] = useState([]);
     const [proveedor, setProveedor] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -49,7 +50,7 @@ const PutSupplier = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const proveedorData = {
             Name: Name.current?.value,
             Phone: Phone.current?.value,
@@ -80,7 +81,9 @@ const PutSupplier = () => {
         }
     };
 
-    if (!proveedor) return <div>Cargando...</div>;
+    if (loading) {
+        return <Spinner />;
+    }
 
     return (
         <div>

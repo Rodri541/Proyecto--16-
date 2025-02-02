@@ -26,6 +26,7 @@ const PutProduct = () => {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -72,7 +73,7 @@ const PutProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const productData = {
             Name: Name.current?.value,
             Price: Price.current?.value,
@@ -112,7 +113,10 @@ const PutProduct = () => {
         }
     };
 
-    if (!product) return <div>Cargando...</div>;
+    if (loading) {
+        return <Spinner />;
+    }
+
 
     return (
         <div>
@@ -175,7 +179,6 @@ const PutProduct = () => {
                                             id="color"
                                             ref={Color}
                                             defaultValue={product.Color}
-                                            required
                                         />
                                     </div>
                                 </div>
