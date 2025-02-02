@@ -3,6 +3,7 @@ import { Navbar, Sidebar } from "../components";
 import API_URL from "../config";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Spinner from '../components/Spinner.jsx';
 
 export const ProductDetails = () => {
     const { productId } = useParams(); // Obtén el productId desde la URL
@@ -12,6 +13,7 @@ export const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         const fetchProductDetails = async () => {
             try {
                 const response = await axios.get(`${API_URL}/productos/${productId}`);
@@ -38,7 +40,7 @@ export const ProductDetails = () => {
     }, [productId]);
 
     if (loading) {
-        return <p>Loading product details...</p>;
+        return <Spinner />;
     }
 
     if (!product) {

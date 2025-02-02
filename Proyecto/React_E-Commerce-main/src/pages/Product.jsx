@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
+
 import { Link, useParams } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { addCart } from "../redux/action";
 import axios from "axios";
 import API_URL from "../config";
 import toast from "react-hot-toast";
+import Spinner from '../components/Spinner.jsx';
 
 import "../css/productDetailPage.css";
 import { Footer, Navbar } from "../components";
@@ -94,12 +95,7 @@ const Product = () => {
     setSelectedColor(color);
   };
 
-  const Loading = () => (
-    <div className="container my-5 py-4 text-center">
-      <Skeleton height={300} width={300} />
-      <Skeleton height={30} width={200} className="mt-3" />
-    </div>
-  );
+  
 
   const ProductDetail = () => {
     const selectedProduct =
@@ -207,12 +203,12 @@ const Product = () => {
     <div className="productDetail">
       <Navbar />
       <div className="container">
-        <div className="row">{loading ? <Loading /> : <ProductDetail />}</div>
+        <div className="row">{loading ? <Spinner /> : <ProductDetail />}</div>
         <div className="row my-5">
           <h3 className="text-center mb-4">También te podría interesar</h3>
           <div className="d-none d-md-block">
             <Marquee pauseOnHover speed={50} className="shadow-sm">
-              {loadingSimilar ? <Loading /> : <ShowSimilarProduct />}
+              {loadingSimilar ? <Spinner /> : <ShowSimilarProduct />}
             </Marquee>
           </div>
         </div>

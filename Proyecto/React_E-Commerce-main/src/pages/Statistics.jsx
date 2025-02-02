@@ -5,6 +5,7 @@ import axios from "axios";
 import API_URL from "../config";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import Spinner from '../components/Spinner.jsx';
 
 const Statistics = () => {
     ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -104,7 +105,7 @@ const Statistics = () => {
                     {chartData ? (
                         <Bar data={chartData} options={options} />
                     ) : (
-                        <p>Cargando datos...</p>
+                        <Spinner />
                     )}
                 </div>
             </div>

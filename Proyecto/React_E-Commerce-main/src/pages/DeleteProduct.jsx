@@ -27,8 +27,7 @@ const DeleteProduct = async (productId, setProducts) => {
             console.error("Error al borrar:", err);
             toast.error("Error al intentar borrar el producto.");
         }
-    } else {
-        
+    } else {        
         toast.error("Eliminación del producto cancelada");
     }
 };

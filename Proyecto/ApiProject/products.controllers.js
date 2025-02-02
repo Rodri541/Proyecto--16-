@@ -171,8 +171,10 @@ const putProduct = async (req, res) => {
       .input("quantity", sql.Int, req.body.Quantity)
       .input("alaventa", sql.Bit, req.body.ALaVenta)
       .input("supplierId", sql.Int, req.body.SupplierId)
+      .input("cost", sql.Decimal(18, 2), req.body.Cost)
+      .input("color", sql.NVarChar(30), req.body.Color)
       .query(
-        "UPDATE Products SET Name = @name, Price = @price, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId WHERE ProductId = @id"
+        "UPDATE Products SET Name = @name, Price = @price, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId, Cost = @cost, Color = @color WHERE ProductId = @id"
       );
 
     if (result.rowsAffected[0] == 0) {
@@ -187,6 +189,8 @@ const putProduct = async (req, res) => {
       Quantity: req.body.Quantity,
       ALaVenta: req.body.ALaVenta,
       SupplierId: req.body.SupplierId,
+      Cost: req.body.Cost,
+      Color: req.body.Color,
     });
   } catch (e) {
     return res.json({ message: e.message });
