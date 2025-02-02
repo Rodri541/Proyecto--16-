@@ -167,14 +167,14 @@ const putProduct = async (req, res) => {
       .input("id", sql.Int, req.params.id)
       .input("name", sql.NVarChar(100), req.body.Name)
       .input("price", sql.Decimal(18, 2), req.body.Price)
+      .input("cost", sql.Decimal(18, 2), req.body.Cost)
       .input("description", sql.NVarChar(255), req.body.Description)
       .input("quantity", sql.Int, req.body.Quantity)
       .input("alaventa", sql.Bit, req.body.ALaVenta)
       .input("supplierId", sql.Int, req.body.SupplierId)
-      .input("cost", sql.Decimal(18, 2), req.body.Cost)
       .input("color", sql.NVarChar(30), req.body.Color)
       .query(
-        "UPDATE Products SET Name = @name, Price = @price, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId, Cost = @cost, Color = @color WHERE ProductId = @id"
+        "UPDATE Products SET Name = @name, Price = @price, Cost = @cost, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId, Color = @color WHERE ProductId = @id"
       );
 
     if (result.rowsAffected[0] == 0) {
