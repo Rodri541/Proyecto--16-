@@ -14,7 +14,7 @@ const PutSupplier = () => {
     const Cost = useRef(null);
     const Email = useRef(null);
     const LastPurchaseDate = useRef(null);
-    const [products, setProducts] = useState([]);
+    //const [products, setProducts] = useState([]);
     const [proveedor, setProveedor] = useState(null);
     
     useEffect(() => {
