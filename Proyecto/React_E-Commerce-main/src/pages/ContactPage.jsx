@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { Footer, Navbar } from "../components";
 import emailjs from '@emailjs/browser';
 import toast from "react-hot-toast";
@@ -16,8 +16,11 @@ const ContactPage = () => {
     const apikey = "emxX7VUerELw595yb";
 
     emailjs.sendForm(serviceId, templateId, refForm.current, apikey)
-    .then(result => console.log(result.text), toast.success("Mensaje enviado"))
-    .catch(error => console.error(error))
+      .then(() => {
+        toast.success("Mensaje enviado");
+        refForm.current.reset();
+      })
+      .catch(error => console.error(error))
   }
 
   return (
@@ -28,14 +31,14 @@ const ContactPage = () => {
         <hr />
         <div className="row my-4 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
-            <form ref = {refForm} action = "" onSubmit = {handleSubmit}>
+            <form ref={refForm} action="" onSubmit={handleSubmit}>
               <div className="form my-3">
                 <label htmlFor="Name">Nombre</label>
                 <input
                   type="text"
                   className="form-control"
                   id="Name"
-                  name = "Name"
+                  name="Name"
                   placeholder="Ingresa tu nombre"
                 />
               </div>
@@ -46,17 +49,17 @@ const ContactPage = () => {
                   className="form-control"
                   id="Email"
                   placeholder="nombre@ejemplo.com"
-                  name = "email"
+                  name="email"
                 />
               </div>
               <div className="form  my-3">
-                <label htmlFor ="Password">Mensaje</label>
+                <label htmlFor="Password">Mensaje</label>
                 <textarea
                   rows={5}
                   className="form-control"
                   id="Password"
                   placeholder="Escribe tu mensaje..."
-                  name = "message"
+                  name="message"
                 />
               </div>
               <div className="text-center">

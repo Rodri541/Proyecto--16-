@@ -95,7 +95,7 @@ const Product = () => {
     setSelectedColor(color);
   };
 
-  
+
 
   const ProductDetail = () => {
     const selectedProduct =
@@ -110,7 +110,7 @@ const Product = () => {
             <img
               className="img-fluid rounded shadow-sm"
               src={selectedProduct.ImageUrl}
-              alt={selectedProduct.Name}/>
+              alt={selectedProduct.Name} />
           </div>
           <div className="col-lg-6">
             <h4 className="text-muted mb-2">{category.Name}</h4>
@@ -148,8 +148,7 @@ const Product = () => {
                   id="colorSelect"
                   value={selectedColor}
                   onChange={(e) => handleColorChange(e.target.value)}
-                  className="form-select"
-                >
+                  className="form-select">
                   {colors.map((color) => (
                     <option key={color.ColorId} value={color.Color}>
                       {color.Color}

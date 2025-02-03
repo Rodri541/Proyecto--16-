@@ -27,7 +27,7 @@ CREATE TABLE Suppliers (
     Phone NVARCHAR(15),
     Cost DECIMAL(18, 2) NULL,
     Email NVARCHAR(100) UNIQUE,
-    LastPurchaseDate DATE
+    LastPurchaseDate DATE DEFAULT NULL
 );
 
 -- Crear la tabla Products con relación a Categories, agregando Largo, Ancho y Color

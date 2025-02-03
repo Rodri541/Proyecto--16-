@@ -127,8 +127,7 @@ export const SuppliersList = () => {
                                                         setExpandedProveedor(
                                                             expandedProveedor === proveedor.SupplierId ? null : proveedor.SupplierId
                                                         )
-                                                    }
-                                                >
+                                                    }>
                                                     {expandedProveedor === proveedor.SupplierId ? "Ocultar" : "Ver"}
                                                 </button>
                                             </td>
@@ -138,16 +137,14 @@ export const SuppliersList = () => {
                                             <td>
                                                 <button
                                                     className="btn btn-sm btn-outline-primary"
-                                                    onClick={() => navigate(`/editarProveedor/${proveedor.SupplierId}`)}
-                                                >
+                                                    onClick={() => navigate(`/editarProveedor/${proveedor.SupplierId}`)}>
                                                     <i className="fa-solid fa-pen"></i>
                                                 </button>
                                             </td>
                                             <td>
                                                 <button
                                                     className="btn btn-sm btn-outline-danger"
-                                                    onClick={() => DeleteSupplier(proveedor.SupplierId, setProveedores)}
-                                                >
+                                                    onClick={() => DeleteSupplier(proveedor.SupplierId, setProveedores)}>
                                                     <i className="fa-solid fa-trash"></i>
                                                 </button>
                                             </td>
