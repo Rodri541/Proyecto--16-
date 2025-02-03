@@ -135,27 +135,6 @@ const PutSupplier = () => {
 
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
-                                        <label htmlFor="producto" className="form-label">Producto</label>
-                                        <select
-                                            className="form-control"
-                                            id="producto"
-                                            ref={ProductId}
-                                            value={proveedor.ProductId || ""}
-                                            onChange={(e) => {
-                                                setProveedor(prevState => ({ ...prevState, ProductId: e.target.value }));
-                                            }}>
-                                            <option value="">Seleccione un producto</option>
-                                            {products.map((product) => (
-                                                <option key={product.ProductId} value={product.ProductId}>
-                                                    {product.Name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div className="col-12 col-md-6">
-                                    <div className="mb-3">
                                         <label htmlFor="fecha-compra" className="form-label">Última Fecha de Compra</label>
                                         <input
                                             type="date"

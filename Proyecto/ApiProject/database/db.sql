@@ -49,7 +49,7 @@ CREATE TABLE Products (
 	Package INT NULL,
     ALaVenta BIT DEFAULT 0,
 	SupplierId INT NOT NULL FOREIGN KEY REFERENCES Suppliers(SupplierId),
-    soldCount INT,
+    soldCount INT DEFAULT 0,
     Color NVARCHAR(30) NULL
 );
 
