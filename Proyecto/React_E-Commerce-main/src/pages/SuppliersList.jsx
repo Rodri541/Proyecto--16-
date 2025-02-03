@@ -18,10 +18,11 @@ export const SuppliersList = () => {
     const [loading, setLoading] = useState(false);
     const [expandedProveedor, setExpandedProveedor] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10); 
+    const [itemsPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
 
     const formatDate = (dateString) => {
+        if (!date) return "-";
         const date = new Date(dateString);
         date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
         const options = { year: "numeric", month: "long", day: "numeric" };
@@ -107,7 +108,7 @@ export const SuppliersList = () => {
                                     <th>Nombre</th>
                                     <th>Teléfono</th>
                                     <th>Productos</th>
-                                    
+
                                     <th>Email</th>
                                     <th>Última Compra</th>
                                     <th>Modificar</th>
@@ -131,7 +132,7 @@ export const SuppliersList = () => {
                                                     {expandedProveedor === proveedor.SupplierId ? "Ocultar" : "Ver"}
                                                 </button>
                                             </td>
-                                           
+
                                             <td>{proveedor.Email}</td>
                                             <td>{formatDate(proveedor.LastPurchaseDate)}</td>
                                             <td>
