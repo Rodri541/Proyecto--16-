@@ -23,7 +23,7 @@ const PutSupplier = () => {
                 const response = await fetch(`${API_URL}/productos`);
                 if (!response.ok) throw new Error("Error al cargar productos");
                 const data = await response.json();
-                setProducts(data);
+                //setProducts(data);
             } catch (error) {
                 console.error("Error al cargar los productos:", error);
                 toast.error("No se pudieron cargar los productos");
