@@ -22,8 +22,8 @@ export const SuppliersList = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     const formatDate = (dateString) => {
-        if (!date) return "-";
         const date = new Date(dateString);
+        if (!date) return "-";
         date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
         const options = { year: "numeric", month: "long", day: "numeric" };
         return date.toLocaleDateString("es-UY", options);
