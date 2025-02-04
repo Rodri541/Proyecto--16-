@@ -22,6 +22,7 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 setFilter(prevFilter => prevFilter.filter(product => product.ProductId !== productId));
 
             } else {
+                console.log(data.message)
                 //toast.error("No se borró correctamente");
                 toast.error(data.message)
                 throw new Error(`Error al intentar borrar el producto con ID: ${productId}`);

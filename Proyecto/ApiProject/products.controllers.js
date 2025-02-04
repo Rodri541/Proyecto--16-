@@ -80,13 +80,10 @@ const postProduct = async (req, res) => {
       return res.status(400).json({ message: 'No se ha recibido una imagen' });
     }
 
-    // Subir la imagen a Azure Blob Storage
     const imageUrl = await uploadImageToAzureBlob(req.file);
 
-    // Crear conexión con la base de datos
     const pool = await getConnection();
 
-    // Parseo y validación de los datos del request
     const creationDate = new Date();
     const price = parseFloat(req.body.Price) || 0;
     const cost = parseFloat(req.body.Cost) || 0;
@@ -102,7 +99,6 @@ const postProduct = async (req, res) => {
     const supplierId = parseInt(req.body.SupplierId) || null;
     const color = req.body.Color || null;
 
-    // Insertar el producto en la base de datos
     const result = await pool
       .request()
       .input("name", sql.NVarChar(100), req.body.Name)
@@ -130,7 +126,6 @@ const postProduct = async (req, res) => {
         SELECT SCOPE_IDENTITY() AS Id
       `);
 
-    // Responder con los datos insertados
     res.json({
       Id: result.recordset[0].Id,
       Name: req.body.Name,
