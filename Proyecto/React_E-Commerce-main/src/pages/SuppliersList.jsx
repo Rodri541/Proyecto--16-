@@ -23,7 +23,7 @@ export const SuppliersList = () => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        if (!date) return "-";
+        if (date === null) return "-";
         date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
         const options = { year: "numeric", month: "long", day: "numeric" };
         return date.toLocaleDateString("es-UY", options);
