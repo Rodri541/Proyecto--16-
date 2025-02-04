@@ -162,6 +162,21 @@ const postProduct = async (req, res) => {
 const putProduct = async (req, res) => {
   try {
     const pool = await getConnection();
+
+    
+    const oldQuantityResult = await pool
+      .request()
+      .input("id", sql.Int, req.params.id)
+      .query("SELECT Quantity FROM Products WHERE ProductId = @id");
+
+    if (oldQuantityResult.recordset.length === 0) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const oldQuantity = oldQuantityResult.recordset[0].Quantity;
+    const newQuantity = req.body.Quantity;
+
+  
     const result = await pool
       .request()
       .input("id", sql.Int, req.params.id)
@@ -169,7 +184,7 @@ const putProduct = async (req, res) => {
       .input("price", sql.Decimal(18, 2), req.body.Price)
       .input("cost", sql.Decimal(18, 2), req.body.Cost)
       .input("description", sql.NVarChar(255), req.body.Description)
-      .input("quantity", sql.Int, req.body.Quantity)
+      .input("quantity", sql.Int, newQuantity)
       .input("alaventa", sql.Bit, req.body.ALaVenta)
       .input("supplierId", sql.Int, req.body.SupplierId)
       .input("color", sql.NVarChar(30), req.body.Color)
@@ -177,8 +192,21 @@ const putProduct = async (req, res) => {
         "UPDATE Products SET Name = @name, Price = @price, Cost = @cost, Description = @description, Quantity = @quantity, ALaVenta = @alaventa, SupplierId = @supplierId, Color = @color WHERE ProductId = @id"
       );
 
-    if (result.rowsAffected[0] == 0) {
+    if (result.rowsAffected[0] === 0) {
       return res.status(404).json({ message: "Product not found" });
+    }
+
+    
+    if (oldQuantity !== newQuantity) {
+      await pool
+        .request()
+        .input("productId", sql.Int, req.params.id)
+        .input("cantidadAnterior", sql.Int, oldQuantity)
+        .input("cantidadNueva", sql.Int, newQuantity)
+        .input("razon", sql.NVarChar(100), req.body.Razon)
+        .query(
+          "INSERT INTO CambioDeStock (CantidadAnterior, CantidadNueva, Razon, ProductId) VALUES (@cantidadAnterior, @cantidadNueva, @razon, @productId)"
+        );
     }
 
     res.json({
@@ -187,19 +215,33 @@ const putProduct = async (req, res) => {
       Price: req.body.Price,
       Cost: req.body.Cost,
       Description: req.body.Description,
-      Quantity: req.body.Quantity,
+      Quantity: newQuantity,
       ALaVenta: req.body.ALaVenta,
       SupplierId: req.body.SupplierId,
       Color: req.body.Color,
     });
   } catch (e) {
-    return res.json({ message: e.message });
+    return res.status(500).json({ message: e.message });
   }
 };
+
+
 
 const deleteProduct = async (req, res) => {
   try {
     const pool = await getConnection();
+    const productId = req.params.id;
+
+
+    const checkOrder = await pool
+      .request()
+      .input("productId", sql.Int, productId)
+      .query("SELECT TOP 1 * FROM OrderProduct WHERE ProductId = @productId");
+
+    if (checkOrder.recordset.length > 0) {
+      return res.status(400).json({ message: "No se puede eliminar, el producto está asociado a una orden" });
+    }
+
     const result = await pool
       .request()
       .input("id", sql.Int, req.params.id)

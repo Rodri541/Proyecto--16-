@@ -15,16 +15,25 @@ const Checkout = () => {
     setLoading(true);
 
     try {
+
+      const userEmail = localStorage.getItem("email");
+
+      if (!userEmail) {
+        setError("Debe iniciar sesión para realizar una compra.");
+        setLoading(false);
+        return;
+      }
+
       const cartItems = state.map((item) => ({
         ProductId: item.ProductId,
-        title: item.Name,   
+        title: item.Name,
         quantity: Number(item.qty),
         unit_price: Number(item.Price),
         color: item.color,
       }));
 
       const userData = {
-        email: localStorage.getItem("email"), 
+        email: localStorage.getItem("email"),
       };
 
       const response = await axios.post(`${API_URL}/checkout`, {
@@ -36,12 +45,12 @@ const Checkout = () => {
       window.location.href = checkoutUrl;
     } catch (err) {
       console.error("Error al procesar la compra:", err);
-      setError("Error al procesar la compra. Inténtalo más tarde.");
+      setError("Debe iniciar sesion para realizar la compra.");
     } finally {
       setLoading(false);
     }
     localStorage.removeItem("cart");
-  
+
   };
 
   const EmptyCart = () => (

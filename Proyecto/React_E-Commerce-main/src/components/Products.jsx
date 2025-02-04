@@ -44,11 +44,11 @@ const Products = () => {
       product.Name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilter(filtered);
-    setCurrentPage(1); // Reinicia la paginación cuando se busca
+    setCurrentPage(1); 
   }, [searchTerm, data]);
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value); // Actualiza el término de búsqueda
+    setSearchTerm(event.target.value); 
   };
 
   const filterProduct = (cat) => {

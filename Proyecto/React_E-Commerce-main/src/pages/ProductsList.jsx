@@ -89,7 +89,7 @@ export const ProductsList = () => {
         <div className="pageListaProducts">
             <Navbar />
             <Sidebar />
-            {/* Barra de búsqueda */}
+          
             <div className="d-flex justify-content-center mb-4">
                 <div className="input-group w-50">
                     <span className="input-group-text bg-white border-end-0 rounded-start">
@@ -112,7 +112,6 @@ export const ProductsList = () => {
                             <thead className="table-dark">
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Altura (cm)</th>
                                     <th style={{ width: "10%" }}>Color</th>
                                     <th>Categoría</th>
                                     <th>Proveedor</th>
@@ -128,7 +127,6 @@ export const ProductsList = () => {
                                 {currentItems.map((item) => (
                                     <tr key={item.ProductId}>
                                         <td>{item.Name}</td>
-                                        <td>{item.Height != null ? item.Height : "-"}</td>
                                         <td>{item.Color != null ? item.Color : "-"}</td>
                                         <td>{item.categoryName}</td>
                                         <td>{item.supplierName}</td>

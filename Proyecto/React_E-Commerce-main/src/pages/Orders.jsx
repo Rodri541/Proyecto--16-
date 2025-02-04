@@ -162,119 +162,122 @@ export const Orders = () => {
               <option value="Listo para entregar">Listo para entregar</option>
               <option value="Entregado">Entregado</option>
             </select>
-         
-          <table className="table table-striped table-hover" style={{ width: "100%" }}>
-            <thead className="table-dark">
-              <tr>
-                <th>Cliente</th>
-                <th>Email</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Detalles</th>
-                <th>Listo para entregar</th>
-                <th>Entregado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredPedidos.map((pedido) => (
-                <React.Fragment key={pedido.OrderId}>
-                  <tr>
-                    <td>{pedido.UserName}</td>
-                    <td>{pedido.UserEmail}</td>
-                    <td>{new Date(pedido.OrderDate).toLocaleDateString("es-UY")}</td>
-                    <td>${pedido.Total}</td>
-                    <td>{pedido.Status}</td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-outline-info"
-                        onClick={() =>
-                          setExpandedPedido(expandedPedido === pedido.OrderId ? null : pedido.OrderId)
-                        }>
-                        {expandedPedido === pedido.OrderId ? "Ocultar detalles" : "Ver detalles"}
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => CambiarEstado(pedido.OrderId, "Listo para entregar")}
-                        disabled={pedido.Status !== "En preparación"}
-                        style={pedido.Status !== "En preparación" ? { backgroundColor: "#d3d3d3", borderColor: "#d3d3d3", color: "#808080", cursor: "not-allowed" } : {}}>
-                        Listo para entregar
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-outline-success"
-                        onClick={() => CambiarEstado(pedido.OrderId, "Entregado")}
-                        disabled={pedido.Status !== "Listo para entregar"}
-                        style={pedido.Status !== "Listo para entregar" ? { backgroundColor: "#d3d3d3", borderColor: "#d3d3d3", color: "#808080", cursor: "not-allowed" } : {}}>
-                        Entregado
-                      </button>
-                    </td>
-                  </tr>
-                  {expandedPedido === pedido.OrderId && (
+
+            <table className="table table-striped table-hover" style={{ width: "100%" }}>
+              <thead className="table-dark">
+                <tr>
+                  <th>Cliente</th>
+                  <th>Email</th>
+                  <th>Fecha</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Detalles</th>
+                  <th>Listo para entregar</th>
+                  <th>Entregado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPedidos.map((pedido) => (
+                  <React.Fragment key={pedido.OrderId}>
                     <tr>
-                      <td colSpan="8" style={{ paddingLeft: "20px", backgroundColor: "#f9f9f9" }}>
-                        <h4>Productos del Pedido</h4>
-                        {pedido.products && pedido.products.length > 0 ? (
-                          <table className="table table-sm table-bordered mt-2">
-                            <thead className="table-light">
-                              <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Medidas</th>
-                                <th>Peso</th>
-                                <th>Volumen</th>
-                                <th>Precio</th>
-                                <th>Color</th>
-                                <th>Total</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {pedido.products.map((producto, index) => (
-                                <tr key={`${pedido.OrderId}-${producto.ProductId}-${index}`}>
-                                  <td>{producto.ProductName}</td>
-                                  <td>{producto.Quantity}</td>
-                                  <td>
-                                    {productoDetalles[producto.ProductId]
-                                      ? `${productoDetalles[producto.ProductId].Base || ''} x ${productoDetalles[producto.ProductId].Height || ''}`.trim().replace(/^ x | x $/, '')
-                                      : "Cargando..."}
-                                  </td>
-                                  <td>
-                                    {productoDetalles[producto.ProductId]
-                                      ? productoDetalles[producto.ProductId].Weight || "-"
-                                      : "Cargando..."}
-                                  </td>
-                                  <td>
-                                    {productoDetalles[producto.ProductId]
-                                      ? productoDetalles[producto.ProductId].Volume || "-"
-                                      : "Cargando..."}
-                                  </td>
-                                  <td>${producto.Price}</td>
-                                  <td>
-                                    {productoDetalles[producto.ProductId]
-                                      ? productoDetalles[producto.ProductId].Color || "Sin especificar"
-                                      : "Cargando..."}
-                                  </td>
-                                  <td>${producto.Quantity * producto.Price}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <p>No hay productos en este pedido.</p>
-                        )}
+                      <td>{pedido.UserName}</td>
+                      <td>{pedido.UserEmail}</td>
+                      <td>{new Date(pedido.OrderDate).toLocaleDateString("es-UY")}</td>
+                      <td>${pedido.Total}</td>
+                      <td>{pedido.Status}</td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-info"
+                          onClick={() =>
+                            setExpandedPedido(expandedPedido === pedido.OrderId ? null : pedido.OrderId)
+                          }>
+                          {expandedPedido === pedido.OrderId ? "Ocultar detalles" : "Ver detalles"}
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={() => CambiarEstado(pedido.OrderId, "Listo para entregar")}
+                          disabled={pedido.Status !== "En preparación"}
+                          style={pedido.Status !== "En preparación" ? { backgroundColor: "#d3d3d3", borderColor: "#d3d3d3", color: "#808080", cursor: "not-allowed" } : {}}>
+                          Listo para entregar
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-success"
+                          onClick={() => CambiarEstado(pedido.OrderId, "Entregado")}
+                          disabled={pedido.Status !== "Listo para entregar"}
+                          style={pedido.Status !== "Listo para entregar" ? { backgroundColor: "#d3d3d3", borderColor: "#d3d3d3", color: "#808080", cursor: "not-allowed" } : {}}>
+                          Entregado
+                        </button>
                       </td>
                     </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+                    {expandedPedido === pedido.OrderId && (
+                      <tr>
+                        <td colSpan="8" style={{ paddingLeft: "20px", backgroundColor: "#f9f9f9" }}>
+                          <h4>Productos del Pedido</h4>
+                          {pedido.products && pedido.products.length > 0 ? (
+                            <table className="table table-sm table-bordered mt-2">
+                              <thead className="table-light">
+                                <tr>
+                                  <th>Producto</th>
+                                  <th>Cantidad</th>
+                                  <th>Medidas</th>
+                                  <th>Peso</th>
+                                  <th>Volumen</th>
+                                  <th>Precio</th>
+                                  <th>Color</th>
+                                  <th>Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {pedido.products.map((producto, index) => (
+                                  <tr key={`${pedido.OrderId}-${producto.ProductId}-${index}`}>
+                                    <td>{producto.ProductName}</td>
+                                    <td>{producto.Quantity}</td>
+                                    <td>
+                                      {productoDetalles[producto.ProductId] &&
+                                        (productoDetalles[producto.ProductId].Base || productoDetalles[producto.ProductId].Height)
+                                        ? `${productoDetalles[producto.ProductId].Base || ''} x ${productoDetalles[producto.ProductId].Height || ''}`
+                                          .trim()
+                                          .replace(/^ x | x $/, '')
+                                        : "-"}
+                                    </td>
+                                    <td>
+                                      {productoDetalles[producto.ProductId]
+                                        ? productoDetalles[producto.ProductId].Weight || "-"
+                                        : "Cargando..."}
+                                    </td>
+                                    <td>
+                                      {productoDetalles[producto.ProductId]
+                                        ? productoDetalles[producto.ProductId].Volume || "-"
+                                        : "Cargando..."}
+                                    </td>
+                                    <td>${producto.Price}</td>
+                                    <td>
+                                      {productoDetalles[producto.ProductId]
+                                        ? productoDetalles[producto.ProductId].Color || "Sin especificar"
+                                        : "Cargando..."}
+                                    </td>
+                                    <td>${producto.Quantity * producto.Price}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <p>No hay productos en este pedido.</p>
+                          )}
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
 
     </div >
   );

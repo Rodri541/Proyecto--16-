@@ -37,7 +37,7 @@
 
   .footer .social-link {
     display: flex;
-    align-items: center; /* Centra el ícono con el texto */
+    align-items: center;
   }
 
   .footer .social-link .fab {
@@ -45,7 +45,7 @@
   }
 
   .footer .text-map {
-    color: #00bcd4; /* Color diferente para el enlace del mapa */
+    color: #00bcd4;
   }
 
   .footer .text-map:hover {
