@@ -6,6 +6,7 @@ const categoriesRoutes = require('./categories.routes.js');
 const suppliersRoutes = require('./suppliers.routes.js');
 const mercadopagoRoutes = require('./mercadopago.routes.js');
 const webhooksRoutes = require('./webhooks.routes.js');
+const cambioDeStock = require('./cambiodestock.routes.js');
 const orders = require('./orders.routes.js');
 // const { createPreference } = require('./controllers/mercadopago.controller');
 const cors = require('cors');
@@ -23,11 +24,9 @@ const corsOptions = {
     credentials: true,
 };
 
-
-
 app.use(cors(corsOptions));
 
-app.use(productRoutes, userRoutes, categoriesRoutes, suppliersRoutes, mercadopagoRoutes, webhooksRoutes, orders);
+app.use(productRoutes, userRoutes, categoriesRoutes, suppliersRoutes, cambioDeStock, mercadopagoRoutes, webhooksRoutes, orders);
 
 app.listen(PORT, () => {
     console.log('Servidor iniciado... Puerto: ', PORT);

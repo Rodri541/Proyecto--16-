@@ -119,6 +119,7 @@ export const ProductsList = () => {
                                     <th>Stock</th>
                                     <th>¿A la venta?</th>
                                     <th>Detalles</th>
+                                    <th>Cambios de stock</th>
                                     <th>Modificar</th>
                                     <th>Eliminar</th>
                                 </tr>
@@ -149,6 +150,13 @@ export const ProductsList = () => {
                                         </td>
                                         <td>
                                             <button
+                                                className="btn btn-sm btn-outline-info"
+                                                onClick={() => navigate(`/cambiosStock/${item.ProductId}`)}>
+                                                Cambios stock
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button
                                                 className="btn btn-sm btn-outline-primary"
                                                 onClick={() => navigate(`/editarProducto/${item.ProductId}`)}>
                                                 <i className="fa-solid fa-pen"></i>
@@ -161,6 +169,7 @@ export const ProductsList = () => {
                                                 <i className="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
+                                       
                                     </tr>
                                 ))}
                             </tbody>

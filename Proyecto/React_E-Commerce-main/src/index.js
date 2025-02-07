@@ -29,7 +29,8 @@ import {
   ProductDetails,
   Statistics,
   AddSupplier,
-  Users
+  Users,
+  ChangeStock
 } from "./pages";
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -143,6 +144,14 @@ root.render(
               <Users />
             </ProtectedRoute>
           } />
+
+         <Route path="/cambiosStock/:ProductoId"
+            element={
+              <ProtectedRoute>
+                <ChangeStock />
+              </ProtectedRoute>
+            }
+          />
 
         </Routes>
       </Provider>

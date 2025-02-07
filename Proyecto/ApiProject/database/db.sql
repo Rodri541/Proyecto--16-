@@ -60,12 +60,13 @@ CREATE TABLE Roles (
 );
 
 CREATE TABLE CambioDeStock (
-	CambioDeStock INT PRIMARY KEY IDENTITY(1,1),
-	FechaDeCambio DATE NOT NULL DEFAULT (CONVERT(date, GETDATE())),
+	CambioDeStockId INT IDENTITY(1,1),
+	FechaDeCambio DATETIME NOT NULL DEFAULT GETDATE(),
 	CantidadAnterior INT NOT NULL,
 	CantidadNueva INT NOT NULL,
 	Razon NVARCHAR(100) NOT NULL CHECK (Razon IN ('Robo', 'Venta fisica', 'Compra', 'Rotura', 'Otro')),
 	ProductId INT NOT NULL FOREIGN KEY REFERENCES Products(ProductId),
+	PRIMARY KEY(ProductId, FechaDeCambio)
 );
 
 -- Crear la tabla Users con los campos adicionales
@@ -369,4 +370,3 @@ INSERT INTO Orders(UserId, UserEmail, OrderDate, Status, Total) VALUES
 
 INSERT INTO OrderProduct(OrderId, ProductId,Price,Quantity) VALUES
 (1, 1, 330, 2);
-

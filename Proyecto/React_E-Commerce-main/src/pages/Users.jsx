@@ -166,8 +166,6 @@ export const Users = () => {
                                                 {usuario.RoleId === 1 ? "Administrador" : "Hacer Admin"}
                                             </button>
                                         </td>
-
-
                                     </tr>
                                 ))}
                             </tbody>
