@@ -12,9 +12,14 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                     "Content-Type": "application/json",
                 },
             });
-            
-            const data = await response.json();
-            console.log(data.message)
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (jsonError) {
+                data = { message: "Error desconocido del servidor" };
+            }
+
             if (response.ok) {
                 toast.success("Producto borrado");
 
@@ -22,14 +27,13 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 setFilter(prevFilter => prevFilter.filter(product => product.ProductId !== productId));
 
             } else {
-                //console.log(data.message)
-                //toast.error("No se borró correctamente");
-                toast.error(data.message)
+                console.error("Error al borrar:", data);
+                toast.error(data.message || "No se pudo eliminar el producto");
                 throw new Error(`Error al intentar borrar el producto con ID: ${productId}`);
             }
         } catch (err) {
-            console.error("Error al borrar:", err);
-            //toast.error("");
+            console.error("Error en la petición:", err);
+            toast.error("Error inesperado al borrar el producto");
         }
     } else {
         toast.error("Eliminación del producto cancelada");
