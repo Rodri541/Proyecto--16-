@@ -13,9 +13,15 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 },
             });
             
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                data = await response.json();
+            } else {
+                data = { message: await response.text() }; 
+            }
 
-            if(response.status === 400){
+            if (response.status === 400) {
                 toast.error("No se puede eliminar, el producto está asociado a una orden");
             }
 
@@ -26,14 +32,12 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 setFilter(prevFilter => prevFilter.filter(product => product.ProductId !== productId));
 
             } else {
-                //console.log(data.message)
-                //toast.error("No se borró correctamente");
-                toast.error(data.message)
+                toast.error(data.message || "No se borró correctamente");
                 throw new Error(`Error al intentar borrar el producto con ID: ${productId}`);
             }
         } catch (err) {
             console.error("Error al borrar:", err);
-            //toast.error("");
+            toast.error("Error al intentar borrar el producto");
         }
     } else {
         toast.error("Eliminación del producto cancelada");
@@ -41,4 +45,3 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
 };
 
 export default DeleteProduct;
-

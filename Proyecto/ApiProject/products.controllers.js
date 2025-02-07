@@ -224,7 +224,7 @@ const putProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const pool = await getConnection();
-    const productId = req.params.id;
+    const productId = parseInt(req.params.id, 10);
 
     const checkOrder = await pool
       .request()
@@ -237,18 +237,20 @@ const deleteProduct = async (req, res) => {
 
     const result = await pool
       .request()
-      .input("id", sql.Int, req.params.id)
+      .input("id", sql.Int, productId)
       .query("DELETE FROM Products WHERE ProductId = @id");
 
-    if (result.rowsAffected[0] == 0) {
+    if (!result.rowsAffected || result.rowsAffected[0] === 0) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    res.json({ message: "Producto borrado" });
+    res.json({ message: "Producto borrado exitosamente" });
   } catch (e) {
-    return res.json({ message: e.message });
+    console.error("Error al eliminar producto:", e);
+    return res.status(500).json({ message: "Error interno del servidor", error: e.message });
   }
 };
+
 
 const getTop10ProductsMostSold = async (req, res) => {
   try {
