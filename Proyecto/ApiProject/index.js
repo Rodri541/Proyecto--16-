@@ -13,21 +13,16 @@ require('dotenv').config();
 
 
 const app = express();
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 
-// const corsOptions = {
-//     origin: '*',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-//     credentials: true,
-// };
 const corsOptions = {
-    origin: 'https://jolly-flower-088dd821e.4.azurestaticapps.net/',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 };
+
 
 
 app.use(cors(corsOptions));

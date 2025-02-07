@@ -15,6 +15,10 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
             
             const data = await response.json();
             
+            if(response.response === 400){
+                toast.error("No se puede eliminar, el producto está asociado a una orden");
+            }
+
             if (response.ok) {
                 toast.success("Producto borrado");
 
