@@ -224,11 +224,7 @@ const putProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const pool = await getConnection();
-    const productId = parseInt(req.params.id, 10); 
-
-    if (isNaN(productId)) {
-      return res.status(400).json({ message: "ID de producto inválido" });
-    }
+    const productId = req.params.id;
 
     const checkOrder = await pool
       .request()
@@ -248,10 +244,10 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    res.json({ message: "Producto eliminado exitosamente" });
-
+    res.json({ message: "Producto eliminado correctamente" });
   } catch (e) {
-    return res.status(500).json({ message: e.message });
+    console.error("Error en el servidor:", e);  
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
