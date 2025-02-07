@@ -12,19 +12,21 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                     "Content-Type": "application/json",
                 },
             });
-            
+
             let data;
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
                 data = await response.json();
             } else {
-                data = { message: await response.text() }; 
+                data = { message: await response.text() };
             }
 
-            /*if (response.status === 400) {
-                toast.error("No se puede eliminar, el producto está asociado a una orden");
+            console.log(data);
 
-            }*/
+            if (response.status === 400) {
+                toast.error("No se puede eliminar, el producto está asociado a una orden");
+                throw new Error(`Error al intentar borrar el producto`);
+            }
 
             if (response.ok) {
                 toast.success("Producto borrado");
