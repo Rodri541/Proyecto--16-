@@ -13,6 +13,9 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 },
             });
 
+            console.log("Response");
+            console.log(response);
+            
             let data;
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
@@ -21,6 +24,7 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 data = { message: await response.text() };
             }
 
+            console.log("Data");
             console.log(data);
 
             if (response.status === 400) {
