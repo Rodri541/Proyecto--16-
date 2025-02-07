@@ -26,6 +26,11 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 throw new Error(`Error al intentar borrar el producto`);
             }
 
+            if (response.status === 500) {
+                toast.error("No se puede eliminar, el producto tiene un cambio de stock manual");
+                throw new Error(`Error al intentar borrar el producto`);
+            }
+
             if (response.ok) {
                 toast.success("Producto borrado");
 

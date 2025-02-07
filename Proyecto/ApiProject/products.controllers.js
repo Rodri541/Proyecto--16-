@@ -235,6 +235,15 @@ const deleteProduct = async (req, res) => {
       return res.status(400).json({ message: "No se puede eliminar, el producto está asociado a una orden" });
     }
 
+    const checkChange = await pool
+      .request()
+      .input("productId", sql.Int, productId)
+      .query("SELECT TOP 1 * FROM CambioDeStock WHERE ProductId = @productId");
+
+    if (checkChange.recordset.length > 0) {
+      return res.status(500).json({ message: "No se puede eliminar, el producto está asociado con un cambio de stock" });
+    }
+
     const result = await pool
       .request()
       .input("id", sql.Int, productId)
