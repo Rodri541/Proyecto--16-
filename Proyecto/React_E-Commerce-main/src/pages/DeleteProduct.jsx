@@ -28,7 +28,7 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 throw new Error(`Error al intentar borrar el producto con ID: ${productId}`);
             }
         } catch (err) {
-            //console.error("Error al borrar:", err);
+            console.error("Error al borrar:", err);
             //toast.error("");
         }
     } else {

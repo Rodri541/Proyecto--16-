@@ -241,10 +241,10 @@ const deleteProduct = async (req, res) => {
       .query("DELETE FROM Products WHERE ProductId = @id");
 
     if (result.rowsAffected[0] == 0) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    res.json({ message: "Product deleted" });
+    res.json({ message: "Producto borrado" });
   } catch (e) {
     return res.json({ message: e.message });
   }
