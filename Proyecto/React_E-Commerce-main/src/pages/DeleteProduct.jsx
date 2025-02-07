@@ -21,9 +21,10 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 data = { message: await response.text() }; 
             }
 
-            if (response.status === 400) {
+            /*if (response.status === 400) {
                 toast.error("No se puede eliminar, el producto está asociado a una orden");
-            }
+
+            }*/
 
             if (response.ok) {
                 toast.success("Producto borrado");
@@ -36,8 +37,9 @@ const DeleteProduct = async (productId, setProducts, setFilter) => {
                 throw new Error(`Error al intentar borrar el producto con ID: ${productId}`);
             }
         } catch (err) {
+            toast.error(data.message || "No se borró correctamente");
             console.error("Error al borrar:", err);
-            toast.error("Error al intentar borrar el producto");
+            //toast.error("Error al intentar borrar el producto");
         }
     } else {
         toast.error("Eliminación del producto cancelada");
