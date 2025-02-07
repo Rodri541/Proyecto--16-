@@ -158,7 +158,7 @@ const putProduct = async (req, res) => {
   try {
     const pool = await getConnection();
 
-
+    
     const oldQuantityResult = await pool
       .request()
       .input("id", sql.Int, req.params.id)
@@ -171,7 +171,7 @@ const putProduct = async (req, res) => {
     const oldQuantity = oldQuantityResult.recordset[0].Quantity;
     const newQuantity = req.body.Quantity;
 
-
+  
     const result = await pool
       .request()
       .input("id", sql.Int, req.params.id)
@@ -191,7 +191,7 @@ const putProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-
+    
     if (oldQuantity !== newQuantity) {
       await pool
         .request()
@@ -237,17 +237,16 @@ const deleteProduct = async (req, res) => {
 
     const result = await pool
       .request()
-      .input("id", sql.Int, productId)
+      .input("id", sql.Int, req.params.id)
       .query("DELETE FROM Products WHERE ProductId = @id");
 
-    if (result.rowsAffected[0] === 0) {
-      return res.status(404).json({ message: "Producto no encontrado" });
+    if (result.rowsAffected[0] == 0) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json({ message: "Producto eliminado correctamente" });
+    res.json({ message: "Product deleted" });
   } catch (e) {
-    console.error("Error en el servidor:", e);  
-    return res.status(500).json({ message: "Error interno del servidor" });
+    return res.json({ message: e.message });
   }
 };
 

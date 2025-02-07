@@ -1,4 +1,4 @@
-const API_URL = "https://apiprueba-ekhkb4ebchfqhubg.canadacentral-01.azurewebsites.net/";
+const API_URL = "https://apiprueba-ekhkb4ebchfqhubg.canadacentral-01.azurewebsites.net";
 
 //"http://localhost:3000"
 
