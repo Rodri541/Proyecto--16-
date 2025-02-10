@@ -87,7 +87,7 @@ const Product = () => {
     };
 
     fetchProductData();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
