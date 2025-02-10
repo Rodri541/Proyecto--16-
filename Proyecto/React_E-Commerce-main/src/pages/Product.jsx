@@ -62,7 +62,7 @@ const Product = () => {
           `${API_URL}/productos/categorias/${productData.CategoryId}`
         );
         const uniqueProducts = response2.data.reduce((acc, product) => {
-          if (!acc.some((item) => item.Name === product.Name)) {
+          if (!acc.some((item) => item.Name === product.Name) && product.ALaVenta) {
             acc.push(product);
           }
           return acc;
