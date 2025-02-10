@@ -8,6 +8,7 @@ import axios from "axios";
 import API_URL from "../config";
 import toast from "react-hot-toast";
 import Spinner from '../components/Spinner.jsx';
+import { useNavigate } from "react-router-dom";
 
 import "../css/productDetailPage.css";
 import { Footer, Navbar } from "../components";
@@ -15,6 +16,7 @@ import { Footer, Navbar } from "../components";
 const Product = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState({});
   const [category, setCategory] = useState({});
@@ -40,6 +42,9 @@ const Product = () => {
       try {
         const productRes = await axios.get(`${API_URL}/productos/${id}`);
         const productData = productRes.data;
+        if(!productData.ALaVenta){
+          navigate("/")
+        }
         setProduct(productData);
 
         const categoryRes = await axios.get(
