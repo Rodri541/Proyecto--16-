@@ -43,15 +43,15 @@ const Login = () => {
     })
     .then((json) => {
       if (json.codigo === 200) {
-        // Almacenar los valores correctos del json en localStorage
-        localStorage.setItem("id", json.userId);  // Usar json.userId
-        localStorage.setItem("token", json.apiKey);  // Guardamos el token JWT
+
+        localStorage.setItem("id", json.userId);  
+        localStorage.setItem("token", json.apiKey);  
         localStorage.setItem("email", json.email);
         localStorage.setItem("roleId", json.roleId); 
         localStorage.setItem("userName", json.userName);
 
         toast.success("Login realizado");
-        navigate("/"); // Redirigir al home o página deseada
+        navigate("/"); 
       } else {
         toast.error("Login no realizado");
       }

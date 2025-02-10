@@ -1,7 +1,6 @@
 const sql = require('mssql');
 const { getConnection } = require('./connection');
 
-// Obtener todos los usuarios
 const getUsers = async (req, res) => {
   try {
     const pool = await getConnection();
@@ -12,7 +11,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-// Obtener un usuario por ID
 const getUser = async (req, res) => {
   try {
     const pool = await getConnection();
@@ -31,16 +29,17 @@ const getUser = async (req, res) => {
   }
 };
 
-// Crear un nuevo usuario
 const postUser = async (req, res) => {
   try {
     const pool = await getConnection();
 
-    //verificar si el email ya existe
     const emailCheck = await pool
       .request()
       .input("email", sql.NVarChar(100), req.body.Email)
       .query("SELECT COUNT(*) AS count FROM Users WHERE Email = @email");
+
+    
+
 
     if (emailCheck.recordset[0].count > 0) {
       return res.status(400).json({ message: "El email ya está registrado." });
@@ -140,9 +139,6 @@ const putUser = async (req, res) => {
   }
 };
 
-
-
-// Eliminar un usuario
 const deleteUser = async (req, res) => {
   try {
     const pool = await getConnection();
@@ -161,7 +157,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Función de login para validar credenciales
 const jwt = require("jsonwebtoken");
 
 
