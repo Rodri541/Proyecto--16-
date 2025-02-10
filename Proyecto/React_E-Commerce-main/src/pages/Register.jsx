@@ -47,6 +47,9 @@ const Register = () => {
       body: JSON.stringify(userData),
     })
       .then((response) => {
+        if(response.status === 400){
+          toast.error("El email ya esta en uso")
+        }
         if (response.ok) {
           toast.success("Registro realizado");
           navigate("/login");

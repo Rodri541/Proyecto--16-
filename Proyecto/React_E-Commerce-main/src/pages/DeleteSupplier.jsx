@@ -15,6 +15,10 @@ const DeleteSupplier = async (supplierId, setProveedores) => {
                 },
             });
 
+            if (response.status === 400) {
+                toast.error("No se puede eliminar, el proveedor esta asociado a algun producto");
+                throw new Error(`Error al intentar borrar el proveedor`);
+            }
             if (response.status === 200) {
                 toast.success("Proveedor borrado");
                 setProveedores((prevProveedores) =>

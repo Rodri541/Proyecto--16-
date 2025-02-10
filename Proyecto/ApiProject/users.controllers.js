@@ -36,6 +36,17 @@ const postUser = async (req, res) => {
   try {
     const pool = await getConnection();
 
+    //verificar si el email ya existe
+    const emailCheck = await pool
+      .request()
+      .input("email", sql.NVarChar(100), req.body.Email)
+      .query("SELECT COUNT(*) AS count FROM Users WHERE Email = @email");
+
+    if (emailCheck.recordset[0].count > 0) {
+      return res.status(400).json({ message: "El email ya está registrado." });
+    }
+
+   
     const result = await pool
       .request()
       .input("userName", sql.NVarChar(50), req.body.UserName)
@@ -65,7 +76,7 @@ const postUser = async (req, res) => {
       RoleId: 2,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error en el servidor" });
   }
 };
 

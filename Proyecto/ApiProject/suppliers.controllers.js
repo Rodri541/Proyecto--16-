@@ -100,19 +100,33 @@ module.exports = {
   deleteSupplier: async (req, res) => {
     try {
       const pool = await getConnection();
-
+      
+      //fijamos si tiene productos asociados
+      const checkProducts = await pool
+        .request()
+        .input("id", sql.Int, req.params.id)
+        .query("SELECT COUNT(*) AS count FROM Products WHERE SupplierId = @id");
+  
+      if (checkProducts.recordset[0].count > 0) {
+        return res.status(400).json({ 
+          message: "No se puede eliminar el proveedor porque tiene productos asociados." 
+        });
+      }
+  
+      //si no tiene productos, se elimna
       const deleteResult = await pool
         .request()
         .input("id", sql.Int, req.params.id)
         .query("DELETE FROM Suppliers WHERE SupplierId = @id");
-
-      if (deleteResult.rowsAffected[0] == 0) {
-        return res.status(404).json({ message: "Supplier not found" });
+  
+      if (deleteResult.rowsAffected[0] === 0) {
+        return res.status(404).json({ message: "Proveedor no encontrado." });
       }
-
-      res.json({ message: "Supplier deleted successfully" });
+  
+      res.json({ message: "Proveedor eliminado correctamente." });
     } catch (e) {
       return res.status(500).json({ message: e.message });
     }
   },
+  
 };
