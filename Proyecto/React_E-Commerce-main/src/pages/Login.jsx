@@ -34,8 +34,9 @@ const Login = () => {
     }),
   })
     .then((response) => {
-      if (!response.ok) {
-        // Si no es 200 OK, lanza un error
+      if (response.status === 401) {
+        toast.error("Usuario y/o contraseña incorrecta");
+        
         throw new Error("Error en la autenticación");
       }
       return response.json();
