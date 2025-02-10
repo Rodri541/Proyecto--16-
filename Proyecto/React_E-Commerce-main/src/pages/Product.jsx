@@ -16,7 +16,6 @@ import { Footer, Navbar } from "../components";
 const Product = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [product, setProduct] = useState({});
   const [category, setCategory] = useState({});
@@ -36,13 +35,14 @@ const Product = () => {
 
   useEffect(() => {
     const fetchProductData = async () => {
+      const navigate = useNavigate();
       setLoading(true);
       setLoadingSimilar(true);
 
       try {
         const productRes = await axios.get(`${API_URL}/productos/${id}`);
         const productData = productRes.data;
-        if(!productData.ALaVenta){
+        if (!productData.ALaVenta) {
           navigate("/")
         }
         setProduct(productData);
